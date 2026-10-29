@@ -1,0 +1,3 @@
+<div class="eng-panel"><h2>Suivi opérationnel</h2><div class="table-responsive"><table class="eng-table"><thead><tr><th>Mission</th><th>En cours</th><th>En retard</th><th>À valider</th></tr></thead><tbody>
+@foreach ($stats as $key => $stat)<tr><td><a href="{{ route('juridique.index', $key) }}">{{ $stat['label'] }}</a></td><td>{{ $stat['open'] }}</td><td><a href="{{ route('juridique.index', ['module' => $key, 'overdue' => 1]) }}">{{ $stat['overdue'] }}</a></td><td><a href="{{ route('juridique.index', ['module' => $key, 'status' => 'review']) }}">{{ $stat['review'] }}</a></td></tr>@endforeach
+</tbody></table></div><p class="text-muted">Les dossiers terminés et annulés sont exclus des retards. Dates de référence : Burkina Faso.</p></div>
