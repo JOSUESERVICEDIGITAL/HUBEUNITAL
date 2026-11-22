@@ -35,8 +35,8 @@ class EngineeringCrmTest extends TestCase
     {
         Chamber::where('slug', 'ingenierie')->update(['is_open' => false]);
         $this->seed(ChamberSeeder::class);
-        $this->assertDatabaseCount('chambers', 13);
-        $this->assertDatabaseCount('categories', 13);
+        $this->assertDatabaseCount('chambers', 14);
+        $this->assertDatabaseCount('categories', 14);
         $this->assertFalse(Chamber::where('slug', 'ingenierie')->first()->is_open);
     }
 

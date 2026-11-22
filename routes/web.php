@@ -23,6 +23,7 @@ use App\Http\Controllers\CeiSupportController;
 use App\Http\Controllers\DonationSettingController;
 use App\Http\Controllers\Front\PopupController;
 use App\Http\Controllers\VolunteerSettingController;
+use App\Http\Controllers\PublicServiceRequestController;
 
 
 
@@ -99,6 +100,7 @@ Route::put('/parametre', [SettingsController::class, 'update'])
 
 //page detail article
 Route::get('/detail/{slug}', [\App\Http\Controllers\DetailController::class, 'index'])->name('article.detail');
+Route::post('/services/demande', [PublicServiceRequestController::class, 'store'])->middleware('throttle:10,1')->name('public.services.request');
 
 // parties commentaires
 Route::post('/comment/{id}', [\App\Http\Controllers\DetailController::class, 'comment'])->name('comment');
@@ -228,7 +230,6 @@ require __DIR__.'/auth.php';
 require __DIR__.'/chambers.php';
 require __DIR__.'/rh.php';
 require __DIR__.'/commercial.php';
-
 
 
 

@@ -13,6 +13,7 @@
     <!-- Liens du head -->
     @include('front.partials.styles')
     <!-- Fin des lien du head -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/css/iziToast.min.css">
 </head>
 
 <body>
@@ -65,5 +66,7 @@
 
 <!-- JavaScript Libraries -->
 @include('front.partials.scripts')
+<script src="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/js/iziToast.min.js"></script>
+@include('fronto.partials.notifications')
 </body>
 </html>

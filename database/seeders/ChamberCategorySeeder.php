@@ -23,16 +23,21 @@ class ChamberCategorySeeder extends Seeder
             'Formation' => 'Formation aux métiers du numérique et renforcement des compétences.',
             'Finance' => 'Gestion financière, préparation budgétaire et accompagnement au financement des projets.',
             'Cybersécurité' => 'Sécurisation des systèmes d’information et sensibilisation à la protection des données.',
-            'Stratégie' => 'Conseil stratégique, transformation numérique et développement des organisations.',
+            'DG et Partenariats' => 'Pilotage stratégique d’EUNITAL, coordination des chambres, relations institutionnelles et développement des partenariats.',
+            'Secrétariat' => 'Services bureautiques, infographie, reprographie, calligraphie, marquage textile et broderie.',
         ];
 
         foreach ($chambers as $name => $description) {
+            $slug = $name === 'DG et Partenariats' ? 'strategie' : Str::slug($name);
             // Include soft-deleted records to keep reruns from creating duplicates.
             // Existing categories retain their content and publication status.
-            Category::withTrashed()->firstOrCreate(
-                ['slug' => Str::slug($name)],
+            $category = Category::withTrashed()->firstOrCreate(
+                ['slug' => $slug],
                 ['name' => $name, 'description' => $description, 'isActive' => true],
             );
+            if ($slug === 'strategie' && ($category->name !== $name || $category->description !== $description)) {
+                $category->update(['name' => $name, 'description' => $description]);
+            }
         }
     }
 }

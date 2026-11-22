@@ -26,7 +26,7 @@
  <a href="{{ url('/') }}" class="navbar-brand p-0 d-none d-lg-block">
           @if($global_setting->logo ?? false)
     <img src="{{ asset('storage/' . $global_setting->logo) }}" 
-         alt="{{ $global_setting->website_name ?? 'Logo CEI' }}"
+         alt="{{ $global_setting->website_name ?? 'Logo EUNITAL' }}"
          style="max-height: 80px; width: auto; object-fit: contain;">
 @else
     <h1 class="m-0 display-4 text-uppercase text-info">
@@ -44,7 +44,7 @@
               href="#"
               class="nav-link dropdown-toggle"
               data-toggle="dropdown"
-              >Categorie</a
+              >Chambres</a
             >
             <div class="dropdown-menu rounded-0 m-0">
 

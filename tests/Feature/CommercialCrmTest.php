@@ -204,7 +204,7 @@ class CommercialCrmTest extends TestCase
         $this->assertTrue(CommercialAccessAccount::where('user_id', $agent->id)->first()->hasRole('commercial-veille'));
         $count = DB::table('rh_employees')->count();
         $this->seed(CommercialSeeder::class);
-        $this->assertDatabaseCount('chambers', 13);
+        $this->assertDatabaseCount('chambers', 14);
         $this->assertSame($count, DB::table('rh_employees')->count());
         $this->assertSame(1, Article::where('slug', 'chambre-commerciale-eunital')->count());
         $this->actingAs($agent)->get('/commerciale/clients')->assertForbidden();

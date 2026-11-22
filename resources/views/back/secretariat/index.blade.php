@@ -1,0 +1,59 @@
+@extends('back.secretariat.layout')
+@section('crm-title',$definition['label'])
+@section('crm-content')
+<div class="sec-panel">
+    <div class="sec-toolbar">
+        <form method="GET">
+            <input class="form-control" name="q" value="{{ request('q') }}" placeholder="Rechercher...">
+            @if(isset($definition['fields']['status']) && $definition['fields']['status']['type']==='select')
+                <select class="form-control" name="status">
+                    <option value="">Tous les statuts</option>
+                    @foreach($definition['fields']['status']['options'] as $value=>$label)
+                        <option value="{{ $value }}" @selected(request('status')==$value)>{{ $label }}</option>
+                    @endforeach
+                </select>
+            @endif
+            @if($module==='stock')
+                <label><input type="checkbox" name="low" value="1" @checked(request('low'))> Stock faible</label>
+            @endif
+            <button class="btn btn-primary">Filtrer</button>
+        </form>
+        <div class="sec-actions">
+            <a class="btn btn-outline-secondary" href="{{ route('secretariat.export',['module'=>$module]) }}?{{ http_build_query(request()->except('page')) }}">Exporter CSV</a>
+            @if($module !== 'team' || in_array(auth()->user()->role,['admin','superadmin'],true))
+                <a class="btn btn-primary" href="{{ route('secretariat.create',$module) }}">+ Ajouter</a>
+            @endif
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="sec-table">
+            <thead><tr><th>ID</th><th>Désignation</th>
+            @foreach(array_slice($definition['fields'],0,4) as $field=>$meta)<th>{{ $meta['label'] }}</th>@endforeach
+            <th>Actions</th></tr></thead>
+            <tbody>
+            @forelse($records as $record)
+                <tr>
+                    <td>#{{ $record->id }}</td>
+                    <td><a href="{{ route('secretariat.show',[$module,$record->id]) }}"><strong>{{ $record->{$definition['title']} ?? ('#'.$record->id) }}</strong></a></td>
+                    @foreach(array_slice($definition['fields'],0,4) as $field=>$meta)
+                        <td>
+                        @if(($meta['type']??null)==='relation')
+                            {{ $lookups[$field][$record->$field] ?? '—' }}
+                        @elseif(($meta['type']??null)==='select')
+                            <span class="sec-badge">{{ $meta['options'][$record->$field] ?? $record->$field }}</span>
+                        @else
+                            {{ $record->$field ?: '—' }}
+                        @endif
+                        </td>
+                    @endforeach
+                    <td><div class="sec-actions"><a class="btn btn-sm btn-outline-secondary" href="{{ route('secretariat.show',[$module,$record->id]) }}">Voir</a><a class="btn btn-sm btn-outline-primary" href="{{ route('secretariat.edit',[$module,$record->id]) }}">Modifier</a></div></td>
+                </tr>
+            @empty
+                <tr><td colspan="7" class="sec-empty">Aucun dossier pour le moment.</td></tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
+    {{ $records->links() }}
+</div>
+@endsection

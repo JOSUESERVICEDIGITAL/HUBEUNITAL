@@ -1,0 +1,38 @@
+.dg-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin:24px 0}
+.dg-heading h1{font-size:30px;color:#142c4e;margin:10px 0}
+.dg-heading p{color:#718096;margin:0}
+.dg-heading a,.dg-crm a:not(.btn){color:#197c78}
+.dg-nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:24px;padding:14px;border:1px solid #dfece8;border-radius:16px;background:linear-gradient(130deg,#fff,#f1faf6)}
+.dg-nav a{padding:9px 12px;border-radius:9px;font-size:13px}
+.dg-nav a.selected,.dg-nav a:hover{background:#197c78;color:white!important}
+.dg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-bottom:24px}
+.dg-panel,.dg-kpi{background:#fff;border:1px solid #e0e9e7;border-radius:16px;box-shadow:0 8px 26px rgba(20,44,78,.055)}
+.dg-panel{padding:24px;margin-bottom:24px}
+.dg-panel h2{font-size:20px;color:#142c4e;margin-bottom:16px}
+.dg-kpi{display:block;padding:20px;color:#142c4e!important}
+.dg-kpi:hover{transform:translateY(-2px);border-color:#71b9a2;box-shadow:0 12px 28px rgba(25,124,120,.12)}
+.dg-kpi strong{display:block;color:#197c78;font-size:29px;margin:9px 0}
+.dg-kpi span{display:block;color:#718096;font-size:13px}
+.dg-toolbar,.dg-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.dg-toolbar{margin-bottom:18px}
+.dg-toolbar form,.dg-actions{justify-content:flex-start}
+.dg-table{width:100%;border-collapse:collapse;font-size:14px}
+.dg-table th{padding:12px;background:#eff7f4;color:#49665e;text-align:left}
+.dg-table td{padding:12px;border-bottom:1px solid #edf2f0;vertical-align:middle}
+.dg-badge{display:inline-block;background:#e6f4ef;color:#216b58;border-radius:20px;padding:4px 10px;font-size:12px}
+.dg-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.dg-form .wide{grid-column:1/-1}
+.dg-form label{display:block;color:#315d55;font-weight:600;font-size:14px;margin-bottom:6px}
+.dg-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.dg-fields dt{color:#718096;font-size:12px}.dg-fields dd{white-space:pre-line;overflow-wrap:anywhere}
+.dg-empty{text-align:center;color:#718096;padding:32px}
+.dg-avatar{width:58px;height:58px;object-fit:cover;border-radius:50%;border:2px solid #dcece5;background:#f3f8f6}
+.dg-logo{width:62px;height:62px;object-fit:contain;padding:5px;border:1px solid #e3ece9;border-radius:13px;background:#fff}
+.dg-profile{display:flex;align-items:center;gap:16px;padding:15px;border:1px solid #e5eeea;border-radius:14px;background:#fff}
+.dg-profile img{width:78px;height:78px;border-radius:50%;object-fit:cover}
+.dg-partner{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid #edf2f0}
+.dg-partner img{width:54px;height:54px;object-fit:contain;padding:4px;border:1px solid #e3ece9;border-radius:12px}
+.dg-progress{height:8px;background:#eaf1ed;border-radius:8px}.dg-progress span{display:block;height:100%;background:#197c78;border-radius:8px}
+.dg-audit details{padding:12px 0;border-bottom:1px solid #edf2f0}.dg-audit summary{cursor:pointer;color:#197c78}
+.dg-crm .btn-primary{background:#197c78;border-color:#197c78}.dg-crm .btn-primary:hover{background:#145e5b;border-color:#145e5b}
+@media(max-width:767px){.dg-form,.dg-fields{grid-template-columns:1fr}.dg-panel{padding:17px}.dg-heading h1{font-size:24px}}

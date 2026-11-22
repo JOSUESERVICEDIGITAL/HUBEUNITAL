@@ -33,6 +33,8 @@
 
 @section('main_section')
 
+@include('fronto.partials.service-dock')
+
 <!-- News Detail Start -->
 <div class="position-relative mb-3">
     <img
@@ -43,7 +45,7 @@
     <div class="overlay position-relative bg-light">
         <div class="mb-3">
             <a href="{{ route('category.activite', $article->category->slug) }}">
-                {{ $article->category->name }}
+                Chambre : {{ $article->category->name }}
             </a>
             <span class="px-1">/</span>
             <span>{{ $article->created_at->isoFormat('DD MMMM YYYY') }}</span>
@@ -175,6 +177,5 @@
 
 
 @endsection
-
 
 

@@ -54,7 +54,7 @@
     <!-- CATÉGORIES -->
     <div class="col-lg-3 col-md-6 mb-5">
       <h5 class="mb-4 text-white text-uppercase font-weight-bold">
-        Catégories
+        Chambres
       </h5>
       <div class="m-n1">
         @foreach ($global_category as $category)
@@ -87,7 +87,7 @@
 <!-- BAS DE PAGE -->
 <div class="container-fluid py-4 px-sm-3 px-md-5" style="background: #111111">
   <p class="m-0 text-center">
-    CEI &copy; <a href="#">{{ $global_settings->web_site_name }}</a> 2025 . Tout droit reservé.
+    EUNITAL &copy; <a href="#">{{ $global_settings->web_site_name }}</a> 2025 . Tout droit reservé.
     Conçu et développé par  <a href="https://josueservicedigital.com">josueservicedigital</a><br />
   </p>
 </div>

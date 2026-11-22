@@ -54,7 +54,7 @@
                     <div class="overlay">
                         <div class="mb-1">
                             <a class="text-white" href="{{ route('category.activite', $article->category->slug ?? '') }}">
-                                {{ $article->category->name ?? 'Non catégorisé' }}
+                                {{ $article->category->name ?? 'Chambre non attribuée' }}
                             </a>
                             <span class="px-2 text-white">/</span>
                             <a class="text-white" href="{{ route('article.detail', $article->slug) }}">
@@ -83,7 +83,7 @@
 
 
                                     
-                                        <h3 class="m-0">Categories</h3>
+                                        <h3 class="m-0">Chambres</h3>
                                         <a class="text-secondary font-weight-medium text-decoration-none" href="">View All</a>
                                     </div>
 
@@ -97,7 +97,7 @@
                                             </div>
                                         @endforeach
                                     @else
-                                        <p class="text-muted">Aucune catégorie disponible.</p>
+                                        <p class="text-muted">Aucune chambre disponible.</p>
                                     @endif
                                 </div>
         </div>
@@ -308,7 +308,4 @@
 
 
 @endsection
-
-
-
 

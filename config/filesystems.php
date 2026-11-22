@@ -46,6 +46,14 @@ return [
             'throw' => true,
         ],
 
+        'prospecting_private' => [
+            'driver' => 'local',
+            'root' => storage_path('app/prospecting-private'),
+            'visibility' => 'private',
+            'serve' => false,
+            'throw' => true,
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),

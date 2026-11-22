@@ -1,11 +1,14 @@
 @extends('front.app')
 
-@section('title', 'CEI - Categorie')
+@section('title', 'CEI - Chambres')
 
 
 @section('main_section')
-    
+    @include('fronto.partials.service-dock')
 
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h2 class="m-0 text-uppercase font-weight-bold">Chambre : {{ $category->name }}</h2>
+</div>
 <div class="row">
 @if(count($category->articles))
 @foreach ($category->articles as $article)

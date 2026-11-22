@@ -1,6 +1,6 @@
 @extends('front.app')
 
-@section('title', 'CEI - Detail')
+@section('title', 'EUNITAL - Detail')
 
 @section('breaking_news')
 <!-- Breaking News Start -->
@@ -33,6 +33,8 @@
 
 @section('main_section')
 
+@include('fronto.partials.service-dock')
+
  <!-- News Detail Start -->
  <div class="position-relative mb-3">
     <img
@@ -45,7 +47,7 @@
         <a
           class="badge badge-info text-uppercase font-weight-semi-bold p-2 mr-2"
           href=""
-          >{{ $article->category->name }}</a
+          >Chambre : {{ $article->category->name }}</a
         >
         <a class="text-body" href="">  @php
             $now = now(); // Utilisation de la helper function now() au lieu de Carbon::now()
@@ -211,6 +213,5 @@
   
 
 @endsection
-
 
 

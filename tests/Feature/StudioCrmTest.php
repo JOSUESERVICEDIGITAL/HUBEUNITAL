@@ -210,7 +210,10 @@ class StudioCrmTest extends TestCase
             $this->get(route('studio.index', $module))->assertOk();
             $this->get(route('studio.create', $module))->assertOk();
         }
-        $dashboard = $this->get(route('studio.dashboard'))->assertOk();
+        $dashboard = $this->get(route('studio.dashboard'))
+            ->assertOk()
+            ->assertSee('Tableau de bord Studio')
+            ->assertSee('Planning de tournage');
         preg_match_all('/<a class="eng-kpi" href="([^"]+)"/', $dashboard->getContent(), $matches);
         $this->assertGreaterThanOrEqual(8, count($matches[1]));
         foreach (array_slice($matches[1], 0, 8) as $href) {

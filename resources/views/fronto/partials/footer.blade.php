@@ -124,7 +124,7 @@
       </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-5">
-                <h4 class="font-weight-bold mb-4">Categories</h4>
+                <h4 class="font-weight-bold mb-4">Chambres</h4>
                 <div class="d-flex flex-wrap m-n1">
                      @foreach ($global_category as $category)
                         <a href="{{ route('category.activite', $category->slug) }}" class="btn btn-sm btn-outline-secondary m-1">

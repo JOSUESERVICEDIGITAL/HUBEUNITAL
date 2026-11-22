@@ -13,7 +13,7 @@
                 <a href="{{route('fronto.soutien')}}" class="nav-item nav-link">Soutenir EUNITAL</a>
                 <a href="single.html" class="nav-item nav-link">Single News</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Categories</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Chambres</a>
                     <div class="dropdown-menu rounded-0 m-0">
                        @foreach ($global_category as $category)
                   <a href="{{ route('category.activite',$category->slug) }}" class="dropdown-item">{{ $category->name }}</a>

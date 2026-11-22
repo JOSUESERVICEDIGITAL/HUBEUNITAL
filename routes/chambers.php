@@ -1,12 +1,22 @@
 <?php
 
 use App\Http\Controllers\ChamberController;
+use App\Http\Controllers\DgController;
+use App\Http\Controllers\DevelopmentController;
 use App\Http\Controllers\EngineeringController;
+use App\Http\Controllers\FormationsController;
+use App\Http\Controllers\SecretariatController;
 use App\Http\Controllers\GraphismeController;
 use App\Http\Controllers\JuridiqueController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\StudioController;
+use App\Http\Controllers\PublicServiceInboxController;
+use App\Http\Controllers\ProspectingFormController;
 use App\Http\Middleware\EngineeringAccess;
+use App\Http\Middleware\DgAccess;
+use App\Http\Middleware\DevelopmentAccess;
+use App\Http\Middleware\FormationsAccess;
+use App\Http\Middleware\SecretariatAccess;
 use App\Http\Middleware\GraphismeAccess;
 use App\Http\Middleware\JuridiqueAccess;
 use App\Http\Middleware\MarketingAccess;
@@ -14,6 +24,20 @@ use App\Http\Middleware\StudioAccess;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'otp.verified'])->group(function () {
+    Route::middleware(['verified', 'checkRole:admin,superadmin'])->prefix('backoffice/demandes-services')->name('public-services.')->group(function () {
+        Route::get('/', [PublicServiceInboxController::class, 'index'])->name('index');
+        Route::get('/{requestId}', [PublicServiceInboxController::class, 'show'])->whereNumber('requestId')->name('show');
+        Route::patch('/{requestId}/statut', [PublicServiceInboxController::class, 'updateStatus'])->whereNumber('requestId')->name('status');
+    });
+    Route::middleware(['verified', 'checkRole:admin,superadmin'])->prefix('backoffice/formulaires')->name('prospecting-forms.')->group(function () {
+        Route::get('/', [ProspectingFormController::class, 'index'])->name('index');
+        Route::post('/preparer', [ProspectingFormController::class, 'resolve'])->name('resolve');
+        Route::post('/enregistrer', [ProspectingFormController::class, 'store'])->name('store');
+        Route::get('/{prospectId}/pdf', [ProspectingFormController::class, 'downloadPdf'])->whereNumber('prospectId')->name('pdf');
+        Route::get('/pdf-archives/{downloadId}', [ProspectingFormController::class, 'downloadArchivedPdf'])->whereNumber('downloadId')->name('pdf-archive');
+        Route::get('/{prospectId}', [ProspectingFormController::class, 'show'])->whereNumber('prospectId')->name('show');
+    });
+
     Route::prefix('juridique')->name('juridique.')->middleware(JuridiqueAccess::class)->group(function () {
         Route::get('/', [JuridiqueController::class, 'dashboard'])->name('dashboard');
         Route::get('/rapports', [JuridiqueController::class, 'reports'])->name('reports');
@@ -88,5 +112,57 @@ Route::middleware(['auth', 'otp.verified'])->group(function () {
         Route::get('/{module}/{record}', [EngineeringController::class, 'show'])->whereNumber('record')->name('show');
         Route::put('/{module}/{record}', [EngineeringController::class, 'update'])->whereNumber('record')->name('update');
         Route::delete('/{module}/{record}', [EngineeringController::class, 'destroy'])->whereNumber('record')->name('destroy');
+    });
+    Route::prefix('developpement')->name('development.')->middleware(DevelopmentAccess::class)->group(function () {
+        Route::get('/', [DevelopmentController::class, 'dashboard'])->name('dashboard');
+        Route::get('/rapports', [DevelopmentController::class, 'reports'])->name('reports');
+        Route::get('/historique', [DevelopmentController::class, 'auditLog'])->name('audit');
+        Route::get('/{module}/export', [DevelopmentController::class, 'export'])->name('export');
+        Route::get('/{module}/nouveau', [DevelopmentController::class, 'create'])->name('create');
+        Route::get('/{module}', [DevelopmentController::class, 'index'])->name('index');
+        Route::post('/{module}', [DevelopmentController::class, 'store'])->name('store');
+        Route::get('/{module}/{record}/modifier', [DevelopmentController::class, 'edit'])->whereNumber('record')->name('edit');
+        Route::get('/{module}/{record}', [DevelopmentController::class, 'show'])->whereNumber('record')->name('show');
+        Route::put('/{module}/{record}', [DevelopmentController::class, 'update'])->whereNumber('record')->name('update');
+        Route::delete('/{module}/{record}', [DevelopmentController::class, 'destroy'])->whereNumber('record')->name('destroy');
+    });
+    Route::prefix('formations')->name('formations.')->middleware(FormationsAccess::class)->group(function () {
+        Route::get('/', [FormationsController::class, 'dashboard'])->name('dashboard');
+        Route::get('/rapports', [FormationsController::class, 'reports'])->name('reports');
+        Route::get('/historique', [FormationsController::class, 'auditLog'])->name('audit');
+        Route::get('/{module}/export', [FormationsController::class, 'export'])->name('export');
+        Route::get('/{module}/nouveau', [FormationsController::class, 'create'])->name('create');
+        Route::get('/{module}', [FormationsController::class, 'index'])->name('index');
+        Route::post('/{module}', [FormationsController::class, 'store'])->name('store');
+        Route::get('/{module}/{record}/modifier', [FormationsController::class, 'edit'])->whereNumber('record')->name('edit');
+        Route::get('/{module}/{record}', [FormationsController::class, 'show'])->whereNumber('record')->name('show');
+        Route::put('/{module}/{record}', [FormationsController::class, 'update'])->whereNumber('record')->name('update');
+        Route::delete('/{module}/{record}', [FormationsController::class, 'destroy'])->whereNumber('record')->name('destroy');
+    });
+    Route::prefix('secretariat')->name('secretariat.')->middleware(SecretariatAccess::class)->group(function () {
+        Route::get('/', [SecretariatController::class, 'dashboard'])->name('dashboard');
+        Route::get('/rapports', [SecretariatController::class, 'reports'])->name('reports');
+        Route::get('/historique', [SecretariatController::class, 'auditLog'])->name('audit');
+        Route::get('/{module}/export', [SecretariatController::class, 'export'])->name('export');
+        Route::get('/{module}/nouveau', [SecretariatController::class, 'create'])->name('create');
+        Route::get('/{module}', [SecretariatController::class, 'index'])->name('index');
+        Route::post('/{module}', [SecretariatController::class, 'store'])->name('store');
+        Route::get('/{module}/{record}/modifier', [SecretariatController::class, 'edit'])->whereNumber('record')->name('edit');
+        Route::get('/{module}/{record}', [SecretariatController::class, 'show'])->whereNumber('record')->name('show');
+        Route::put('/{module}/{record}', [SecretariatController::class, 'update'])->whereNumber('record')->name('update');
+        Route::delete('/{module}/{record}', [SecretariatController::class, 'destroy'])->whereNumber('record')->name('destroy');
+    });
+    Route::prefix('dg-partenariats')->name('dg.')->middleware(DgAccess::class)->group(function () {
+        Route::get('/', [DgController::class, 'dashboard'])->name('dashboard');
+        Route::get('/rapports', [DgController::class, 'reports'])->name('reports');
+        Route::get('/historique', [DgController::class, 'auditLog'])->name('audit');
+        Route::get('/{module}/export', [DgController::class, 'export'])->name('export');
+        Route::get('/{module}/nouveau', [DgController::class, 'create'])->name('create');
+        Route::get('/{module}', [DgController::class, 'index'])->name('index');
+        Route::post('/{module}', [DgController::class, 'store'])->name('store');
+        Route::get('/{module}/{record}/modifier', [DgController::class, 'edit'])->whereNumber('record')->name('edit');
+        Route::get('/{module}/{record}', [DgController::class, 'show'])->whereNumber('record')->name('show');
+        Route::put('/{module}/{record}', [DgController::class, 'update'])->whereNumber('record')->name('update');
+        Route::delete('/{module}/{record}', [DgController::class, 'destroy'])->whereNumber('record')->name('destroy');
     });
 });

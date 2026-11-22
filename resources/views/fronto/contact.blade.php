@@ -42,12 +42,6 @@
                         Contactez-nous
                     </h6>
 
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Succès !</strong> {{ session('success') }}
-                        </div>
-                    @endif
-
                     <form action="{{ route('front.contact.send') }}" method="POST">
                         @csrf
                         <div class="form-row">

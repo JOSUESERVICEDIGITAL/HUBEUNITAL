@@ -16,6 +16,39 @@
             <div><a class="btn btn-primary" style="background:#007f89; border-color:#007f89" href="{{ route('engineering.dashboard') }}">Ouvrir le CRM Ingénierie →</a></div>
             <p class="text-muted mt-3">Accès réservé aux administrateurs et aux membres actifs ajoutés dans l’équipe de la chambre.</p>
         @endif
+    @elseif ($chamber->slug === 'developpement')
+        <p>Projets de production, exigences, sprints, tâches, dépôts, livrables, déploiements, incidents, maintenance et équipe technique.</p>
+        @if ($chamber->is_open)
+            <div><a class="btn btn-primary" style="background:#007f89; border-color:#007f89" href="{{ route('development.dashboard') }}">Ouvrir le CRM Développement →</a></div>
+            <p class="text-muted mt-3">Accès réservé aux administrateurs et aux membres actifs de l’équipe Développement.</p>
+        @else
+            <p class="text-muted">Le CRM Développement est prêt. Le superadmin peut ouvrir la chambre ci-dessous.</p>
+        @endif
+    @elseif ($chamber->slug === 'formation')
+        <p>Bootcamps et formations flex, promotions, apprenants, candidatures, inscriptions, contenus pédagogiques, sessions, présences, évaluations, certificats et vivier de talents.</p>
+        @if ($chamber->is_open)
+            <div><a class="btn btn-primary" style="background:#007f89; border-color:#007f89" href="{{ route('formations.dashboard') }}">Ouvrir le CRM Formations →</a></div>
+            <p class="text-muted mt-3">Accès réservé aux administrateurs et aux membres actifs de l’équipe Formations.</p>
+        @else
+            <p class="text-muted">Le CRM Formations est prêt. Le superadmin peut ouvrir la chambre ci-dessous.</p>
+        @endif
+    @elseif ($chamber->slug === 'secretariat')
+        <p>Saisie et impressions, photocopie, scan, calligraphie artistique, infographie, reprographie, marquage textile, broderie, devis, factures, paiements, stock et suivi des travaux.</p>
+        @if ($chamber->is_open)
+            <div><a class="btn btn-primary" style="background:#1d6f79; border-color:#1d6f79" href="{{ route('secretariat.dashboard') }}">Ouvrir le CRM Secrétariat →</a></div>
+            <p class="text-muted mt-3">Accès réservé aux administrateurs et aux membres actifs de l’équipe Secrétariat.</p>
+        @else
+            <p class="text-muted">Le CRM Secrétariat est prêt. Le superadmin peut ouvrir la chambre ci-dessous.</p>
+        @endif
+    @elseif ($chamber->slug === 'strategie')
+        <p>La Direction générale pilote la vision et les priorités d’EUNITAL, coordonne les chambres, supervise les décisions et développe les alliances avec les entreprises, universités, institutions, investisseurs et partenaires.</p>
+        <p>Le CRM centralise les profils de direction avec photo, les partenaires avec logo et coordonnées, les accords, les audiences, les priorités stratégiques et le suivi de l’équipe.</p>
+        @if ($chamber->is_open)
+            <div><a class="btn btn-primary" style="background:#197c78; border-color:#197c78" href="{{ route('dg.dashboard') }}">Ouvrir le CRM DG et Partenariats →</a></div>
+            <p class="text-muted mt-3">Accès réservé aux administrateurs et aux membres actifs de l’équipe DG.</p>
+        @else
+            <p class="text-muted">Le CRM DG et Partenariats est prêt. Le superadmin peut ouvrir la chambre ci-dessous.</p>
+        @endif
     @elseif ($chamber->slug === 'marketing')
         <p>Stratégies de marque, audiences, prospects, campagnes, contenus, calendrier éditorial, résultats, dépenses, bibliothèque créative et équipe.</p>
         @if ($chamber->is_open)

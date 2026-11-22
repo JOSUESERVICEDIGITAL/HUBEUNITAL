@@ -77,7 +77,7 @@
                         <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">
                             <div class="mb-1" style="font-size: 13px;">
                                 <a href="{{ route('category.activite', $category->slug) }}">
-                                    {{ $category->name ?? 'Non catégorisé' }}
+                                    {{ $category->name ?? 'Chambre non attribuée' }}
                                 </a>
                                 <span class="px-1">/</span>
                                 <span>{{ $article->created_at->isoFormat('DD MMMM YYYY') }}</span>
