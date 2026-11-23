@@ -37,6 +37,6 @@ class DatabaseSeeder extends Seeder
             'message_confirmation' => 'Merci pour votre demande. Nous vous contacterons prochainement.',
         ]);
 
-        $this->call([ChamberSeeder::class, EngineeringArticleSeeder::class, MarketingSeeder::class, StudioSeeder::class, GraphismeSeeder::class, JuridiqueArticleSeeder::class, RhSeeder::class, CommercialSeeder::class]);
+        $this->call([ChamberSeeder::class, EngineeringArticleSeeder::class, MarketingSeeder::class, StudioSeeder::class, GraphismeSeeder::class, JuridiqueArticleSeeder::class, RhSeeder::class, CommercialSeeder::class, MissingChamberArticlesSeeder::class]);
     }
 }

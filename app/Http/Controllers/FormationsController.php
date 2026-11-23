@@ -6,6 +6,7 @@ use App\Models\Chamber;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
@@ -72,6 +73,7 @@ class FormationsController extends Controller
             $rule = [$meta['required'] ? 'required' : 'nullable'];
             $rule[] = match ($meta['type']) {
                 'email' => 'email',
+                'url' => 'url',
                 'number', 'money' => 'numeric',
                 'date' => 'date',
                 'datetime' => 'date',
@@ -79,10 +81,21 @@ class FormationsController extends Controller
                 default => 'string',
             };
             if (isset($meta['options'])) $rule[] = Rule::in(array_keys($meta['options']));
-            if (in_array($meta['type'], ['text', 'textarea'], true)) $rule[] = 'max:'.($meta['type'] === 'textarea' ? 5000 : 255);
+            if (in_array($meta['type'], ['text', 'textarea', 'url'], true)) $rule[] = 'max:'.($meta['type'] === 'textarea' ? 5000 : ($meta['type'] === 'url' ? 2048 : 255));
             $rules[$field] = $rule;
         }
+        if ($module === 'content') {
+            $rules['content_file'] = ['nullable', 'file', 'mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,txt,csv,jpg,jpeg,png,mp4,webm,mp3,wav', 'max:102400'];
+        }
         $data = $request->validate($rules);
+        unset($data['content_file']);
+
+        if ($module === 'content' && ! empty($data['document_url'])) {
+            $scheme = strtolower((string) parse_url($data['document_url'], PHP_URL_SCHEME));
+            if (! in_array($scheme, ['http', 'https'], true)) {
+                throw ValidationException::withMessages(['document_url' => 'Le lien doit utiliser HTTP ou HTTPS.']);
+            }
+        }
 
         if ($module === 'cohorts') {
             if (! empty($data['ends_on']) && $data['ends_on'] < $data['starts_on']) throw ValidationException::withMessages(['ends_on' => 'La fin ne peut précéder le début.']);
@@ -124,6 +137,11 @@ class FormationsController extends Controller
             if (! $learner) throw ValidationException::withMessages(['learner_id' => 'Apprenant inexistant.']);
         }
         return $data;
+    }
+
+    private function isUploadedContent(?string $path): bool
+    {
+        return $path !== null && str_starts_with($path, 'content/');
     }
 
     private function audit(Request $request, string $module, int $id, string $action, $before, $after): void
@@ -203,45 +221,90 @@ class FormationsController extends Controller
     public function store(Request $request, string $module)
     {
         $this->mayWrite($request, $module);
-        $id = DB::transaction(function () use ($request, $module) {
-            $this->lockOpen();
-            $data = $this->validated($request, $module);
-            $id = DB::table('frm_'.$module)->insertGetId($data + ['created_by' => $request->user()->id, 'created_at' => now(), 'updated_at' => now()]);
-            $this->audit($request, $module, $id, 'create', null, $data);
-            return $id;
-        });
+        $storedFile = null;
+        try {
+            $id = DB::transaction(function () use ($request, $module, &$storedFile) {
+                $this->lockOpen();
+                $data = $this->validated($request, $module);
+                if ($module === 'content' && $request->hasFile('content_file')) {
+                    $storedFile = $request->file('content_file')->store('content', 'formations_private');
+                    $data['document_url'] = $storedFile;
+                }
+                $id = DB::table('frm_'.$module)->insertGetId($data + ['created_by' => $request->user()->id, 'created_at' => now(), 'updated_at' => now()]);
+                $this->audit($request, $module, $id, 'create', null, $data);
+                return $id;
+            });
+        } catch (\Throwable $exception) {
+            if ($storedFile !== null) Storage::disk('formations_private')->delete($storedFile);
+            throw $exception;
+        }
         return redirect()->route('formations.show', [$module, $id])->with('success', 'Enregistrement créé.');
     }
 
     public function update(Request $request, string $module, int $record)
     {
         $this->mayWrite($request, $module);
-        DB::transaction(function () use ($request, $module, $record) {
-            $this->lockOpen();
-            $before = DB::table('frm_'.$module)->where('id', $record)->lockForUpdate()->first();
-            abort_unless($before, 404);
-            $data = $this->validated($request, $module, $record);
-            DB::table('frm_'.$module)->where('id', $record)->update($data + ['updated_at' => now()]);
-            $this->audit($request, $module, $record, 'update', $before, $data);
-        });
+        $storedFile = null;
+        $obsoleteFile = null;
+        try {
+            DB::transaction(function () use ($request, $module, $record, &$storedFile, &$obsoleteFile) {
+                $this->lockOpen();
+                $before = DB::table('frm_'.$module)->where('id', $record)->lockForUpdate()->first();
+                abort_unless($before, 404);
+                $data = $this->validated($request, $module, $record);
+                if ($module === 'content') {
+                    if ($request->hasFile('content_file')) {
+                        $storedFile = $request->file('content_file')->store('content', 'formations_private');
+                        $data['document_url'] = $storedFile;
+                    } elseif (empty($data['document_url']) && $this->isUploadedContent($before->document_url)) {
+                        $data['document_url'] = $before->document_url;
+                    }
+                    if ($this->isUploadedContent($before->document_url) && $before->document_url !== ($data['document_url'] ?? null)) {
+                        $obsoleteFile = $before->document_url;
+                    }
+                }
+                DB::table('frm_'.$module)->where('id', $record)->update($data + ['updated_at' => now()]);
+                $this->audit($request, $module, $record, 'update', $before, $data);
+            });
+        } catch (\Throwable $exception) {
+            if ($storedFile !== null) Storage::disk('formations_private')->delete($storedFile);
+            throw $exception;
+        }
+        if ($obsoleteFile !== null) Storage::disk('formations_private')->delete($obsoleteFile);
         return redirect()->route('formations.show', [$module, $record])->with('success', 'Modifications enregistrées.');
     }
 
     public function destroy(Request $request, string $module, int $record)
     {
         abort_unless($this->administrative($request), 403);
+        $deletedFile = null;
         try {
-            DB::transaction(function () use ($request, $module, $record) {
+            DB::transaction(function () use ($request, $module, $record, &$deletedFile) {
                 $this->lockOpen();
                 $before = DB::table('frm_'.$module)->where('id', $record)->lockForUpdate()->first();
                 abort_unless($before, 404);
+                if ($module === 'content' && $this->isUploadedContent($before->document_url)) $deletedFile = $before->document_url;
                 DB::table('frm_'.$module)->where('id', $record)->delete();
                 $this->audit($request, $module, $record, 'delete', $before, null);
             });
         } catch (QueryException $exception) {
             return back()->withErrors(['delete' => 'Cet élément est utilisé par d’autres dossiers. Retirez ses dépendances avant de le supprimer.']);
         }
+        if ($deletedFile !== null) Storage::disk('formations_private')->delete($deletedFile);
         return redirect()->route('formations.index', $module)->with('success', 'Enregistrement supprimé.');
+    }
+
+    public function downloadContent(int $record)
+    {
+        $content = DB::table('frm_content')->find($record);
+        abort_unless($content && $this->isUploadedContent($content->document_url), 404);
+
+        $disk = Storage::disk('formations_private');
+        abort_unless($disk->exists($content->document_url), 404);
+
+        $extension = pathinfo($content->document_url, PATHINFO_EXTENSION);
+        $filename = \Illuminate\Support\Str::slug($content->name).($extension ? '.'.$extension : '');
+        return $disk->download($content->document_url, $filename, ['X-Content-Type-Options' => 'nosniff']);
     }
 
     public function auditLog() { return view('back.formations.audit', ['audits' => $this->auditQuery()->paginate(30)]); }

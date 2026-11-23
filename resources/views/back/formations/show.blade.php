@@ -25,6 +25,10 @@
                         {{ $lookups[$field][$record->$field] ?? '—' }}
                     @elseif(($meta['type'] ?? null) === 'select')
                         {{ $meta['options'][$record->$field] ?? $record->$field ?: '—' }}
+                    @elseif($module === 'content' && $field === 'document_url' && str_starts_with($record->$field ?? '', 'content/'))
+                        <a href="{{ route('formations.content.download', $record->id) }}">Télécharger le fichier</a>
+                    @elseif($meta['type'] === 'url' && $record->$field)
+                        <a href="{{ $record->$field }}" target="_blank" rel="noopener noreferrer">{{ $record->$field }}</a>
                     @else
                         {{ $record->$field ?: '—' }}
                     @endif

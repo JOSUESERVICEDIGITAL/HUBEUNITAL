@@ -11,7 +11,6 @@
             <div class="navbar-nav mr-auto py-0">
             <a href="{{ route('home') }}" class="nav-item nav-link active ml-xxs">Accueil</a>
                 <a href="{{route('fronto.soutien')}}" class="nav-item nav-link">Soutenir EUNITAL</a>
-                <a href="single.html" class="nav-item nav-link">Single News</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Chambres</a>
                     <div class="dropdown-menu rounded-0 m-0">

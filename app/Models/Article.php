@@ -45,6 +45,9 @@ public function imageUrl(): ?string {
     if ($this->image && filter_var($this->image, FILTER_VALIDATE_URL) && in_array(strtolower(parse_url($this->image, PHP_URL_SCHEME) ?? ''), ['http', 'https'], true)) {
         return $this->image;
     }
+    if ($this->image && str_starts_with($this->image, 'fronto/img/')) {
+        return asset($this->image);
+    }
     return $this->image ? asset('storage/' . $this->image) : null;
 }
 

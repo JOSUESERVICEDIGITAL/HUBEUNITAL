@@ -2,11 +2,7 @@
     <nav
       class="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5"
     >
-      <a href="index.html" class="navbar-brand d-block d-lg-none">
-        <h1 class="m-0 display-4 text-uppercase text-info">
-          Les<span class="text-white font-weight-normal">Activités</span>
-        </h1>
-      </a>
+     
       <button
         type="button"
         class="navbar-toggler"
@@ -37,8 +33,6 @@
         </a>
             
 
-          <a href="{{ route('home') }}" class="nav-item nav-link active">Accueil</a>
-          {{-- <a href="single.html" class="nav-item nav-link">Post</a> --}}
           <div class="nav-item dropdown">
             <a
               href="#"
@@ -52,12 +46,11 @@
               <a href="{{ route('category.activite',$category->slug) }}" class="dropdown-item">{{ $category->name }}</a>
 
               @endforeach
-
              </div>
           </div>
           <a href="{{ route('front.contact') }}" class="nav-item nav-link">Contact</a>
         </div>
-        <div class="ml-auto d-flex align-items-center" style="max-width: 300px">
+        <div class="ml-auto d-flex align-items-center"sing style="max-width: 300px">
           <form action="{{ route('search') }}" method="POST" class="w-100">  <!-- Changé POST en GET -->
               @csrf
               <div class="input-group">

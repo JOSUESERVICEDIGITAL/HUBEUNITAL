@@ -19,25 +19,11 @@
           <ul class="submenu_class" style="display: none">
             <li><a href="{{ route('chambers.index') }}" class="{{ request()->routeIs('chambers.index') ? 'active' : '' }}">Toutes les chambres</a></li>
             @foreach ($sidebarChambers as $sidebarChamber)
-              @if ($sidebarChamber->slug === 'studio' && (in_array(auth()->user()->role, ['admin', 'superadmin'], true) || \Illuminate\Support\Facades\DB::table('std_team')->where('user_id', auth()->id())->where('status', 'active')->exists()))
-                @include('back.studio.sidebar')
-              @elseif ($sidebarChamber->slug === 'rh' && (auth()->user()->role === 'superadmin' || app(\App\Services\RhAuthorization::class)->account(auth()->user())))
-                @include('back.rh.sidebar')
-              @elseif ($sidebarChamber->slug === 'commerciale' && (auth()->user()->role === 'superadmin' || app(\App\Services\CommercialAuthorization::class)->account(auth()->user())))
-                @include('back.commercial.sidebar')
-              @elseif ($sidebarChamber->slug === 'strategie')
               <li>
-                <a href="{{ route('chambers.show', $sidebarChamber) }}" class="{{ request()->routeIs('dg.*') || request()->is('chambres/strategie') ? 'active' : '' }}">
-                  DG et Partenariats <small>{{ $sidebarChamber->is_open ? '· Ouverte' : '· Fermée' }}</small>
+                <a href="{{ route('chambers.show', $sidebarChamber) }}" class="{{ (request()->routeIs('dg.*') && $sidebarChamber->slug === 'strategie') || (request()->routeIs('engineering.*') && $sidebarChamber->slug === 'ingenierie') || (request()->routeIs('development.*') && $sidebarChamber->slug === 'developpement') || (request()->routeIs('formations.*') && $sidebarChamber->slug === 'formation') || (request()->routeIs('secretariat.*') && $sidebarChamber->slug === 'secretariat') || (request()->routeIs('marketing.*') && $sidebarChamber->slug === 'marketing') || (request()->routeIs('studio.*') && $sidebarChamber->slug === 'studio') || (request()->routeIs('graphisme.*') && $sidebarChamber->slug === 'graphisme') || (request()->routeIs('juridique.*') && $sidebarChamber->slug === 'juridique') || (request()->routeIs('rh.*') && $sidebarChamber->slug === 'rh') || (request()->routeIs('commercial.*') && $sidebarChamber->slug === 'commerciale') || request()->is('chambres/'.$sidebarChamber->slug) ? 'active' : '' }}">
+                  {{ $sidebarChamber->slug === 'strategie' ? 'DG et Partenariats' : $sidebarChamber->name }} <small>{{ $sidebarChamber->is_open ? '· Ouverte' : '· Fermée' }}</small>
                 </a>
               </li>
-              @else
-              <li>
-                <a href="{{ route('chambers.show', $sidebarChamber) }}" class="{{ (request()->routeIs('engineering.*') && $sidebarChamber->slug === 'ingenierie') || (request()->routeIs('development.*') && $sidebarChamber->slug === 'developpement') || (request()->routeIs('formations.*') && $sidebarChamber->slug === 'formation') || (request()->routeIs('secretariat.*') && $sidebarChamber->slug === 'secretariat') || (request()->routeIs('marketing.*') && $sidebarChamber->slug === 'marketing') || (request()->routeIs('studio.*') && $sidebarChamber->slug === 'studio') || (request()->routeIs('graphisme.*') && $sidebarChamber->slug === 'graphisme') || (request()->routeIs('juridique.*') && $sidebarChamber->slug === 'juridique') || (request()->routeIs('rh.*') && $sidebarChamber->slug === 'rh') || (request()->routeIs('commercial.*') && $sidebarChamber->slug === 'commerciale') || request()->is('chambres/'.$sidebarChamber->slug) ? 'active' : '' }}">
-                  {{ $sidebarChamber->name }} <small>{{ $sidebarChamber->is_open ? '· Ouverte' : '· Fermée' }}</small>
-                </a>
-              </li>
-              @endif
             @endforeach
           </ul>
         </li>

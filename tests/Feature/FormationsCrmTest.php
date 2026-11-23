@@ -6,7 +6,9 @@ use App\Models\Chamber;
 use App\Models\User;
 use Database\Seeders\ChamberSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class FormationsCrmTest extends TestCase
@@ -23,6 +25,55 @@ class FormationsCrmTest extends TestCase
     private function user(string $role = 'superadmin'): User
     {
         return User::factory()->create(['role' => $role, 'email_verified_at' => now()]);
+    }
+
+    public function test_training_content_supports_private_file_uploads_and_external_links(): void
+    {
+        Storage::fake('formations_private');
+        $this->actingAs($this->user());
+        $program = DB::table('frm_programs')->insertGetId([
+            'name' => 'Formation test', 'format' => 'bootcamp', 'status' => 'active',
+            'duration_hours' => 20, 'price' => 0, 'created_at' => now(), 'updated_at' => now(),
+        ]);
+        $contentData = [
+            'name' => 'Support PDF', 'program_id' => $program, 'kind' => 'document',
+            'order' => 1, 'status' => 'draft', 'duration_minutes' => 30,
+        ];
+
+        $this->get(route('formations.create', 'content'))->assertOk()->assertSee('content_file');
+        $this->post(route('formations.store', 'content'), array_merge($contentData, [
+            'content_file' => UploadedFile::fake()->create('cours.pdf', 12, 'application/pdf'),
+        ]))->assertRedirect();
+
+        $content = DB::table('frm_content')->where('name', 'Support PDF')->first();
+        $this->assertStringStartsWith('content/', $content->document_url);
+        Storage::disk('formations_private')->assertExists($content->document_url);
+        $this->get(route('formations.content.download', $content->id))->assertOk();
+
+        $this->put(route('formations.update', ['content', $content->id]), array_merge($contentData, [
+            'document_url' => '',
+        ]))->assertRedirect();
+        $this->assertSame($content->document_url, DB::table('frm_content')->find($content->id)->document_url);
+        Storage::disk('formations_private')->assertExists($content->document_url);
+
+        $this->put(route('formations.update', ['content', $content->id]), array_merge($contentData, [
+            'content_file' => UploadedFile::fake()->create('cours-modifie.pdf', 14, 'application/pdf'),
+        ]))->assertRedirect();
+        $updatedPath = DB::table('frm_content')->find($content->id)->document_url;
+        $this->assertNotSame($content->document_url, $updatedPath);
+        Storage::disk('formations_private')->assertMissing($content->document_url);
+        Storage::disk('formations_private')->assertExists($updatedPath);
+
+        $this->post(route('formations.store', 'content'), array_merge($contentData, [
+            'name' => 'Lien externe',
+            'document_url' => 'https://example.com/cours',
+        ]))->assertRedirect();
+        $this->assertSame('https://example.com/cours', DB::table('frm_content')->where('name', 'Lien externe')->value('document_url'));
+
+        $this->post(route('formations.store', 'content'), array_merge($contentData, [
+            'name' => 'Fichier refusé',
+            'content_file' => UploadedFile::fake()->create('script.html', 1, 'text/html'),
+        ]))->assertSessionHasErrors('content_file');
     }
 
     public function test_all_pages_render_and_full_training_lifecycle_is_audited(): void

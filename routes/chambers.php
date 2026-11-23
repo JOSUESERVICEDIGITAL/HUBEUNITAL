@@ -131,6 +131,7 @@ Route::middleware(['auth', 'otp.verified'])->group(function () {
         Route::get('/rapports', [FormationsController::class, 'reports'])->name('reports');
         Route::get('/historique', [FormationsController::class, 'auditLog'])->name('audit');
         Route::get('/{module}/export', [FormationsController::class, 'export'])->name('export');
+        Route::get('/content/{record}/telecharger', [FormationsController::class, 'downloadContent'])->whereNumber('record')->name('content.download');
         Route::get('/{module}/nouveau', [FormationsController::class, 'create'])->name('create');
         Route::get('/{module}', [FormationsController::class, 'index'])->name('index');
         Route::post('/{module}', [FormationsController::class, 'store'])->name('store');

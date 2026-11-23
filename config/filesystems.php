@@ -46,6 +46,14 @@ return [
             'throw' => true,
         ],
 
+        'formations_private' => [
+            'driver' => 'local',
+            'root' => storage_path('app/formations-private'),
+            'visibility' => 'private',
+            'serve' => false,
+            'throw' => true,
+        ],
+
         'prospecting_private' => [
             'driver' => 'local',
             'root' => storage_path('app/prospecting-private'),

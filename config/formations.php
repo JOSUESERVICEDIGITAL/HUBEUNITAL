@@ -67,7 +67,7 @@ return [
             'order' => ['label' => 'Ordre', 'type' => 'number', 'required' => true],
             'status' => ['label' => 'Statut', 'type' => 'select', 'required' => true, 'options' => ['draft' => 'Brouillon', 'review' => 'À valider', 'published' => 'Publié', 'archived' => 'Archivé']],
             'duration_minutes' => ['label' => 'Durée (minutes)', 'type' => 'number', 'required' => true],
-            'document_url' => ['label' => 'Lien du contenu', 'type' => 'text', 'required' => false],
+            'document_url' => ['label' => 'Lien externe du contenu', 'type' => 'url', 'required' => false],
             'objectives' => ['label' => 'Objectifs', 'type' => 'textarea', 'required' => false],
             'description' => ['label' => 'Description', 'type' => 'textarea', 'required' => false],
         ]],
