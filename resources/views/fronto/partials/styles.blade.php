@@ -58,40 +58,6 @@
   }
 </style>
 
-
-
-<style>
-    #topbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1030; /* supérieur à Bootstrap navbar (si utilisée) */
-        background: #f8f9fa; /* bg-light équivalent */
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Pour éviter que le reste du contenu ne passe sous la topbar */
-    body {
-        padding-top: 150px; /* Ajuste selon la hauteur totale de la topbar */
-    }
-</style>
-
-<style>
-    #main-navbar {
-        position: fixed;
-        top: 135px; /* hauteur de la topbar pour éviter le chevauchement */
-        left: 0;
-        width: 100%;
-        z-index: 1020;
-        background: #f8f9fa;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    body {
-        padding-top: 220px; /* topbar + navbar combinés (ajuste selon le vrai rendu) */
-    }
-</style>
 <style>
     .ml-xxs {
         margin-left: -25px !important;

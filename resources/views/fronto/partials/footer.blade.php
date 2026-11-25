@@ -97,7 +97,8 @@
 
 
  <!-- Footer Start -->
-    <div class="container-fluid bg-light pt-5 px-sm-3 px-md-5">
+    <footer class="fronto-footer" style="background-image: linear-gradient(rgba(255, 255, 255, .72), rgba(255, 255, 255, .8)), url('{{ asset('front/img/Mains turquoise brillantes en relief.png') }}');">
+    <div class="container-fluid pt-5 px-sm-3 px-md-5">
         <div class="row">
             <div class="col-lg-3 col-md-6 mb-5">
                 <a href="{{ route('home') }}" class="navbar-brand" aria-label="EUNITAL — Accueil">
@@ -112,7 +113,7 @@
       <p class="font-weight-medium">
         <i class="fa fa-envelope mr-2"></i>{{ $global_settings->email }}
       </p>
-      <h6 class="mt-4 mb-3 text-white text-uppercase font-weight-bold">
+      <h6 class="mt-4 mb-3 text-dark text-uppercase font-weight-bold">
         Suivez nous
       </h6>
       <div class="d-flex justify-content-start">
@@ -174,4 +175,5 @@
 			Conçu et développé par  <a href="https://josueservicedigital.com">josueservicedigital</a>
         </p>
     </div>
+    </footer>
     <!-- Footer End -->

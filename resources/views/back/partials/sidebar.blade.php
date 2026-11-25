@@ -114,6 +114,13 @@
         </li>
 
         <li>
+          <a href="{{ route('signage-videos.index') }}" class="{{ request()->routeIs('signage-videos.*') ? 'active' : '' }}">
+            <i class="fas fa-tv"></i>
+            <span>Affichage digital</span>
+          </a>
+        </li>
+
+        <li>
           <a href="{{ route('public-services.index') }}" class="{{ request()->routeIs('public-services.*') ? 'active' : '' }}">
             <i class="fas fa-concierge-bell"></i>
             <span>Demandes de services</span>

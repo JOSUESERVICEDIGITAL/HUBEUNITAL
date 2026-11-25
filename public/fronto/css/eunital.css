@@ -15,12 +15,75 @@
 .login-wrapper .btn-primary { background: var(--eunital-primary); border-color: var(--eunital-primary); }
 .login-wrapper .btn-primary:hover, .login-wrapper .btn-primary:focus { background: #005b63; border-color: #005b63; }
 .login-wrapper a { color: #007f89; }
-/* Let the header take its natural height on every screen size. */
-#topbar { position: relative !important; }
-#main-navbar { position: sticky !important; top: 0 !important; }
-body { padding-top: 0 !important; }
+#site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    background: #f8f9fa;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+#topbar, #main-navbar { position: relative; }
+body { padding-top: 0; }
+.fronto-footer {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.frontoffice-signage-player {
+    display: block;
+    width: 100%;
+    max-width: 260px;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    background: #103e46;
+    object-fit: cover;
+}
+.digital-signage-preview {
+    display: block;
+    width: 220px;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #103e46;
+    object-fit: contain;
+}
+.frontoffice-signage-status {
+    max-width: 260px;
+    color: #842029;
+    font-size: 12px;
+}
+.eunital-welcome {
+    flex: 1 1 220px;
+    min-width: 0;
+    min-height: 3.6em;
+    margin-left: 18px;
+    color: var(--eunital-primary);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    line-height: 1.2;
+}
+.welcome-cursor {
+    display: inline-block;
+    height: 1em;
+    margin-left: 3px;
+    border-right: 2px solid currentColor;
+    vertical-align: text-bottom;
+    animation: eunital-cursor-blink .8s step-end infinite;
+}
+@keyframes eunital-cursor-blink {
+    50% { opacity: 0; }
+}
 @media (max-width: 991.98px) {
     .navbar-brand .eunital-brand img { width: 42px; height: 42px; }
     .navbar-brand .eunital-brand-copy strong { font-size: 20px; }
     .navbar-brand .eunital-brand-copy small { font-size: 8px; }
+}
+@media (max-width: 575.98px) {
+    .eunital-welcome {
+        margin: 0 0 4px 54px;
+        font-size: 13px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .welcome-cursor { animation: none; }
 }

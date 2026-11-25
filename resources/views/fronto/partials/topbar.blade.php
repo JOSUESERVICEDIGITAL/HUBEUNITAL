@@ -1,3 +1,9 @@
+@php
+    $digitalSignagePlaylist = $digitalSignageVideos
+        ->map(fn ($video) => asset('storage/' . $video->file_path))
+        ->values();
+@endphp
+
 <div id="topbar" class="container-fluid">
 <div class="container-fluid">
     <div class="row align-items-center bg-light px-lg-5">
@@ -44,14 +50,29 @@
         </div>
     </div>
     <div class="row align-items-center py-2 px-lg-5">
-        <div class="col-lg-4">
-            <a href="{{ url('/') }}" class="navbar-brand p-0 d-none d-lg-block ml-xxs">
+        <div class="col-12 col-lg-5 d-flex flex-wrap align-items-center">
+            <a href="{{ url('/') }}" class="navbar-brand p-0 ml-xxs">
                 <x-eunital-brand />
             </a>
+            <div class="eunital-welcome" aria-hidden="true">
+                <span id="welcome-typewriter"></span><span class="welcome-cursor"></span>
+            </div>
+            <span class="sr-only">Bienvenue à vous au Hub EUNITAL. Le hub des idées qui deviennent des solutions</span>
         </div>
-        <div class="col-lg-8 text-center text-lg-right">
-            <img class="img-fluid" src="img/ads-700x70.jpg" alt="">
-        </div>
+        @if ($digitalSignageVideos->isNotEmpty())
+            <div class="col-12 col-lg-7 d-flex flex-column align-items-center align-items-lg-end justify-content-center py-2">
+                <video
+                    id="frontoffice-signage-player"
+                    class="frontoffice-signage-player"
+                    muted
+                    autoplay
+                    playsinline
+                    preload="metadata"
+                    aria-label="Vidéos publicitaires EUNITAL"
+                ></video>
+                <p id="frontoffice-signage-status" class="frontoffice-signage-status mb-0" aria-live="polite"></p>
+            </div>
+        @endif
     </div>
 </div>
 
@@ -96,6 +117,83 @@
         document.getElementById('customNext').addEventListener('click', function() {
             owl.trigger('next.owl.carousel');
         });
+
+        var welcomeText = 'BIENVENUE À VOUS AU HUB EUNITAL — Le hub des idées qui deviennent des solutions.';
+        var welcomeTarget = document.getElementById('welcome-typewriter');
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            welcomeTarget.textContent = welcomeText;
+        } else {
+            var characterIndex = 0;
+            var isDeleting = false;
+            var animateWelcome = function() {
+                if (isDeleting) {
+                    characterIndex -= 1;
+                    welcomeTarget.textContent = welcomeText.slice(0, characterIndex);
+
+                    if (characterIndex === 0) {
+                        isDeleting = false;
+                        window.setTimeout(animateWelcome, 600);
+                    } else {
+                        window.setTimeout(animateWelcome, 45);
+                    }
+                    return;
+                }
+
+                if (characterIndex < welcomeText.length) {
+                    characterIndex += 1;
+                    welcomeTarget.textContent = welcomeText.slice(0, characterIndex);
+                    if (characterIndex === welcomeText.length) {
+                        window.setTimeout(function() {
+                            isDeleting = true;
+                            animateWelcome();
+                        }, 2200);
+                    } else {
+                        window.setTimeout(animateWelcome, 90);
+                    }
+                    return;
+                }
+            };
+
+            window.setTimeout(animateWelcome, 350);
+        }
+
+        var signagePlayer = document.getElementById('frontoffice-signage-player');
+
+        if (signagePlayer) {
+            var signagePlaylist = @json($digitalSignagePlaylist);
+            var signageStatus = document.getElementById('frontoffice-signage-status');
+            var currentVideoIndex = 0;
+
+            var playSignageVideo = function() {
+                signagePlayer.src = signagePlaylist[currentVideoIndex];
+                signagePlayer.load();
+
+                var playRequest = signagePlayer.play();
+                if (playRequest && typeof playRequest.catch === 'function') {
+                    playRequest.catch(function() {
+                        signagePlayer.controls = true;
+                        signageStatus.textContent = 'La lecture automatique est bloquée. Utilisez les commandes vidéo.';
+                    });
+                }
+            };
+
+            signagePlayer.addEventListener('ended', function() {
+                currentVideoIndex = (currentVideoIndex + 1) % signagePlaylist.length;
+                playSignageVideo();
+            });
+
+            signagePlayer.addEventListener('playing', function() {
+                signageStatus.textContent = '';
+            });
+
+            signagePlayer.addEventListener('error', function() {
+                signagePlayer.controls = true;
+                signageStatus.textContent = 'Cette vidéo ne peut pas être lue.';
+            });
+
+            playSignageVideo();
+        }
     });
 </script>
 

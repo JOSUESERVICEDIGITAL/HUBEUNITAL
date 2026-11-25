@@ -1,9 +1,6 @@
 <!-- Navbar Start -->
 <div id="main-navbar" class="container-fluid p-0 mb-3">
     <nav class="navbar navbar-expand-lg bg-light navbar-light py-2 py-lg-0 px-lg-5">
-        <a href="{{ route('home') }}" class="navbar-brand d-block d-lg-none" aria-label="EUNITAL — Accueil">
-            <x-eunital-brand />
-        </a>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>

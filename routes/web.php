@@ -21,6 +21,7 @@ use App\Http\Controllers\FrontContactController;
 use App\Http\Controllers\FrontSoutienController;
 use App\Http\Controllers\CeiSupportController;
 use App\Http\Controllers\DonationSettingController;
+use App\Http\Controllers\DigitalSignageVideoController;
 use App\Http\Controllers\Front\PopupController;
 use App\Http\Controllers\VolunteerSettingController;
 use App\Http\Controllers\PublicServiceRequestController;
@@ -96,6 +97,20 @@ Route::get('/parametre/{id}', [SettingsController::class, 'show'])
 Route::put('/parametre', [SettingsController::class, 'update'])
     ->name('setting.update')
     ->middleware(['auth', 'verified', 'checkRole:superadmin']);
+
+Route::middleware(['auth', 'verified', 'checkRole:admin'])
+    ->prefix('backoffice/affichage-digital')
+    ->name('signage-videos.')
+    ->group(function () {
+        Route::get('/', [DigitalSignageVideoController::class, 'index'])->name('index');
+        Route::post('/', [DigitalSignageVideoController::class, 'store'])->name('store');
+        Route::put('/{digitalSignageVideo}', [DigitalSignageVideoController::class, 'update'])
+            ->whereNumber('digitalSignageVideo')
+            ->name('update');
+        Route::delete('/{digitalSignageVideo}', [DigitalSignageVideoController::class, 'destroy'])
+            ->whereNumber('digitalSignageVideo')
+            ->name('destroy');
+    });
 
 
 //page detail article

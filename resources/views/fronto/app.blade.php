@@ -17,13 +17,15 @@
 </head>
 
 <body>
-<!-- Debut Topbar -->
-@include('fronto.partials.topbar')
-<!-- Topbar fin -->
+<div id="site-header">
+    <!-- Debut Topbar -->
+    @include('fronto.partials.topbar')
+    <!-- Topbar fin -->
 
-<!-- Navbar debut -->
-@include('fronto.partials.header')
-<!-- Navbar fin -->
+    <!-- Navbar debut -->
+    @include('fronto.partials.header')
+    <!-- Navbar fin -->
+</div>
 
 <br />
 <!-- Breaking News Start -->

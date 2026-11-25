@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\CeiSupport;
+use App\Models\DigitalSignageVideo;
 use App\Models\Partenaire;
 use App\Models\Settings;
 use App\Models\SocialMedia;
@@ -40,6 +41,13 @@ class AppServiceProvider extends ServiceProvider
     {
         view()->composer('back.partials.sidebar', function (View $view) {
             $view->with('sidebarChambers', \App\Models\Chamber::orderBy('id')->get());
+        });
+        view()->composer('fronto.partials.topbar', function (View $view) {
+            $view->with('digitalSignageVideos', DigitalSignageVideo::query()
+                ->where('is_active', true)
+                ->orderBy('sort_order')
+                ->orderBy('id')
+                ->get());
         });
         view()->composer('*', function (View $view) {
             $view->with($this->app->make('view.global-data'));
