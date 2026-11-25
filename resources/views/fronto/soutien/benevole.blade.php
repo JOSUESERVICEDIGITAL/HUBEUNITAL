@@ -104,7 +104,7 @@
             <button type="submit">Envoyer ma demande</button>
         </form>
         <p style="margin-top: 15px; font-size: 14px;">
-            Merci pour votre intérêt à rejoindre l'équipe du CEI. Nous prendrons contact avec vous très prochainement.
+            Merci pour votre intérêt à rejoindre l'équipe du EUNITAL. Nous prendrons contact avec vous très prochainement.
         </p>
     </div>
 

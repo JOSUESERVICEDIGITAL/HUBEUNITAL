@@ -6,46 +6,88 @@
 
 <div id="topbar" class="container-fluid">
 <div class="container-fluid">
-    <div class="row align-items-center bg-light px-lg-5">
-        <div class="col-12 col-md-4 d-flex align-items-center">
-            <a href="{{ route('bienvenue') }}" class="btn btn-primary py-2 px-4 mr-3 ml-xxs">Se connecter</a>
-            <!-- Boutons personnalisés ici, collés juste à côté -->
-            <div class="slider-controls d-flex">
-                <button id="customPrev" class="btn btn-primary mr-2">‹</button>
-                <button id="customNext" class="btn btn-primary">›</button>
-            </div>
-        </div>
-        <div class="col-12 col-md-5">
-    <div class="owl-carousel owl-carousel-1 tranding-carousel position-relative d-inline-flex align-items-center" style="width: 100%; padding-left: 0;">
-       @if(!empty($articles) && count($articles))
-    @foreach($articles as $article)
-        <div class="text-truncate">
-            <a class="text-secondary" href="{{ route('article.detail', $article->slug) }}">
-                {{ $article->title }}
-            </a>
-        </div>
-    @endforeach
-@endif
+    <div class="row bg-light px-lg-5">
+        <div class="col-12">
+            <nav class="navbar navbar-expand-lg navbar-light header-toolbar p-0">
+                <a href="{{ route('bienvenue') }}" class="btn btn-primary btn-sm mr-lg-3">Se connecter</a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#topbarNavigation"
+                    aria-controls="topbarNavigation"
+                    aria-expanded="false"
+                    aria-label="Ouvrir le menu"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-    </div>
-</div>
+                <div class="collapse navbar-collapse" id="topbarNavigation">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a href="{{ route('home') }}" class="nav-link">Accueil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('fronto.soutien') }}" class="nav-link">Soutenir EUNITAL</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Chambres</a>
+                            <div class="dropdown-menu rounded-0 m-0">
+                                @foreach ($global_category as $category)
+                                    <a href="{{ route('category.activite', $category->slug) }}" class="dropdown-item">
+                                        {{ $category->name }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('front.contact') }}" class="nav-link">Contact</a>
+                        </li>
+                    </ul>
 
-        <div class="col-12 col-md-3 d-flex align-items-center justify-content-end">
-            <div class="mr-4 text-secondary" style="white-space: nowrap;">
-                {{ now()->isoFormat('dddd, DD MMMM YYYY') }}
-            </div>
-            <nav class="navbar navbar-expand-sm bg-light p-0">
-                <ul class="navbar-nav ml-auto mr-n2 d-flex flex-row align-items-center">
-                    @if(count($global_social))
-                        @foreach ($global_social as $item)
-                            <li class="nav-item mx-2">
-                                <a class="nav-link text-body p-0" href="{{ $item->lien }}" target="_blank" rel="noopener">
-                                    <small class="{{ $item->icon }}" style="font-size: 1.2rem;"></small>
-                                </a>
-                            </li>
-                        @endforeach
-                    @endif
-                </ul>
+                    <form action="{{ route('search') }}" method="POST" class="input-group header-search mr-lg-3">
+                        @csrf
+                        <input type="text" name="search_key" class="form-control form-control-sm" placeholder="Rechercher..." aria-label="Rechercher" required>
+                        <div class="input-group-append">
+                            <button type="submit" class="input-group-text text-secondary" aria-label="Lancer la recherche">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="header-translate mr-lg-3">
+                        <div id="google_translate_element"></div>
+                        <script>
+                            function googleTranslateElementInit() {
+                                new google.translate.TranslateElement({
+                                    pageLanguage: 'fr',
+                                    includedLanguages: 'fr,en,es,de,it,pt,ar,ru,zh-CN,ja',
+                                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                                }, 'google_translate_element');
+                            }
+                        </script>
+                        <script async src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-between header-meta">
+                        <time class="text-secondary mr-2" datetime="{{ now()->toDateString() }}" title="{{ now()->locale('fr')->isoFormat('dddd D MMMM YYYY') }}">
+                            {{ now()->locale('fr')->isoFormat('ddd D MMM') }}
+                        </time>
+                        @if(count($global_social))
+                            <nav aria-label="Réseaux sociaux">
+                                <ul class="navbar-nav flex-row">
+                                    @foreach ($global_social as $item)
+                                        <li class="nav-item ml-2">
+                                            <a class="nav-link text-body p-0" href="{{ $item->lien }}" target="_blank" rel="noopener" aria-label="Réseau social">
+                                                <small class="{{ $item->icon }}" style="font-size: 1.1rem;"></small>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </nav>
+                        @endif
+                    </div>
+                </div>
             </nav>
         </div>
     </div>
@@ -77,47 +119,11 @@
 </div>
 
 <style>
-    /* Cacher les flèches par défaut Owl Carousel */
-    .owl-carousel .owl-nav {
-        display: none !important;
-    }
+    .header-toolbar { min-height: 52px; }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialiser le carousel
-        var owl = $('.owl-carousel-1');
-        owl.owlCarousel({
-            items: 1,
-            loop: true,
-            margin: 10,
-            autoplay: true,
-            autoplayTimeout: 4000,
-            autoplayHoverPause: true,
-            nav: false,
-            dots: false,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                600: {
-                    items: 1
-                },
-                1000: {
-                    items: 1
-                }
-            }
-        });
-
-        // Gestion des boutons personnalisés
-        document.getElementById('customPrev').addEventListener('click', function() {
-            owl.trigger('prev.owl.carousel');
-        });
-
-        document.getElementById('customNext').addEventListener('click', function() {
-            owl.trigger('next.owl.carousel');
-        });
-
         var welcomeText = 'BIENVENUE À VOUS AU HUB EUNITAL — Le hub des idées qui deviennent des solutions.';
         var welcomeTarget = document.getElementById('welcome-typewriter');
 

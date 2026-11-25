@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Partager le CEI</title>
+    <title>Partager EUNITAL</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
@@ -93,7 +93,7 @@
     <div class="popup-card" id="sharePopup">
         <div class="close-btn" onclick="closePopup()">×</div>
         <h3>Partager</h3>
-        <p>Faites connaître le CEI à votre entourage.<br> Parlez de nous, suivez-nous sur Facebook et partagez nos actions !</p>
+        <p>Faites connaître EUNITAL à votre entourage.<br> Parlez de nous, suivez-nous sur Facebook et partagez nos actions !</p>
         
         <div class="social-links">
             <a href="https://www.facebook.com/cei.page" target="_blank">

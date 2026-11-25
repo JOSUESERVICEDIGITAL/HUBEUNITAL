@@ -86,7 +86,7 @@
 @if($donation?->texte_introduction)
   <p>{{ $donation->texte_introduction }}</p>
 @else
-  <p>Merci de soutenir le CEI ! Voici nos coordonnées bancaires :</p>
+  <p>Merci de soutenir EUNITAL ! Voici nos coordonnées bancaires :</p>
 @endif
 
 <ul>

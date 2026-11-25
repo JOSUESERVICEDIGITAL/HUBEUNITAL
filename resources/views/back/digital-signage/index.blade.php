@@ -7,6 +7,21 @@
 @endsection
 
 @section('dashboard-content')
+    <style>
+        .digital-signage-preview {
+            display: block;
+            width: 240px;
+            height: 135px;
+            max-width: 100%;
+            margin-bottom: .5rem;
+            background: #103e46;
+            object-fit: contain;
+        }
+        .digital-signage-preview[hidden] {
+            display: none !important;
+        }
+    </style>
+
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -125,12 +140,25 @@
                             </td>
                             <td>
                                 <video
+                                    id="video-preview-{{ $video->id }}"
                                     class="digital-signage-preview"
-                                    src="{{ asset('storage/' . $video->file_path) }}"
+                                    data-preview-src="{{ asset('storage/' . $video->file_path) }}"
                                     controls
-                                    preload="metadata"
+                                    preload="none"
+                                    playsinline
+                                    hidden
                                     aria-label="Aperçu : {{ $video->title }}"
                                 ></video>
+                                <p id="video-preview-status-{{ $video->id }}" class="text-danger small mt-1" role="status" hidden></p>
+                                <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    type="button"
+                                    data-preview-toggle="{{ $video->id }}"
+                                    aria-controls="video-preview-{{ $video->id }}"
+                                    aria-expanded="false"
+                                >
+                                    Prévisualiser
+                                </button>
                             </td>
                             <td>
                                 <input
@@ -187,3 +215,41 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.querySelectorAll('[data-preview-toggle]').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var videoId = button.getAttribute('data-preview-toggle');
+                var video = document.getElementById('video-preview-' + videoId);
+                var status = document.getElementById('video-preview-status-' + videoId);
+                var isOpen = button.getAttribute('aria-expanded') === 'true';
+
+                if (isOpen) {
+                    video.pause();
+                    video.removeAttribute('src');
+                    video.load();
+                    video.hidden = true;
+                    status.hidden = true;
+                    status.textContent = '';
+                    button.textContent = 'Prévisualiser';
+                    button.setAttribute('aria-expanded', 'false');
+                    return;
+                }
+
+                video.src = video.getAttribute('data-preview-src');
+                video.hidden = false;
+                button.textContent = 'Fermer l’aperçu';
+                button.setAttribute('aria-expanded', 'true');
+
+                var playRequest = video.play();
+                if (playRequest && typeof playRequest.catch === 'function') {
+                    playRequest.catch(function() {
+                        status.textContent = 'La lecture automatique est bloquée. Utilisez les commandes du lecteur.';
+                        status.hidden = false;
+                    });
+                }
+            });
+        });
+    </script>
+@endpush

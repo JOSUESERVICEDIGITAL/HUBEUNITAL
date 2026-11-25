@@ -22,8 +22,22 @@
     background: #f8f9fa;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
-#topbar, #main-navbar { position: relative; }
+#topbar { position: relative; }
 body { padding-top: 0; }
+.header-toolbar .navbar-nav .nav-link {
+    padding: .5rem .55rem;
+    white-space: nowrap;
+}
+.header-search {
+    width: 160px;
+    flex: 0 0 160px;
+}
+.header-search .form-control { min-width: 0; }
+.header-meta {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-size: .85rem;
+}
 .fronto-footer {
     background-position: center;
     background-repeat: no-repeat;
@@ -77,6 +91,13 @@ body { padding-top: 0; }
     .navbar-brand .eunital-brand img { width: 42px; height: 42px; }
     .navbar-brand .eunital-brand-copy strong { font-size: 20px; }
     .navbar-brand .eunital-brand-copy small { font-size: 8px; }
+    .header-toolbar { padding: .35rem 0; }
+    .header-search {
+        width: 100%;
+        max-width: 320px;
+        margin: .5rem 0;
+    }
+    .header-meta { justify-content: flex-start !important; padding: .35rem 0; }
 }
 @media (max-width: 575.98px) {
     .eunital-welcome {

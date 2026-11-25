@@ -84,6 +84,34 @@ class DigitalSignageVideoTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_video_previews_stay_inactive_until_the_preview_button_is_clicked(): void
+    {
+        DigitalSignageVideo::create([
+            'title' => 'Aperçu différé',
+            'file_path' => 'digital-signage/videos/preview.mp4',
+            'sort_order' => 1,
+            'is_active' => true,
+        ]);
+
+        $html = $this->actingAs($this->administrator())
+            ->get(route('signage-videos.index'))
+            ->assertOk()
+            ->assertSee('Prévisualiser')
+            ->assertSee('preload="none"', false)
+            ->assertSee('aria-expanded="false"', false)
+            ->getContent();
+
+        $this->assertMatchesRegularExpression(
+            '/<video\b[^>]*id="video-preview-1"[^>]*hidden[^>]*>/',
+            $html
+        );
+        $this->assertDoesNotMatchRegularExpression(
+            '/<video\b[^>]*\ssrc="/',
+            $html
+        );
+        $this->assertStringContainsString('data-preview-src=', $html);
+    }
+
     public function test_frontend_plays_only_active_videos_in_order(): void
     {
         Storage::fake('public');
