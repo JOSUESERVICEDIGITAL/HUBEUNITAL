@@ -13,6 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Derrière le proxy Railway (HTTPS) : générer les URLs en https
+        $middleware->trustProxies(at: '*');
+
         // Enregistrement du middleware 'admin'
         $middleware->alias([
             'admin' => Admin::class,  // Alias du middleware Admin
