@@ -14,30 +14,47 @@ RUN npm run build
 # Étape 2 : préparer Laravel avec PHP et Apache
 FROM php:8.3-apache
 
+# Installer les dépendances système et extensions PHP
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libicu-dev \
     libzip-dev \
     libpng-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
+    libonig-dev \
     unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql mbstring bcmath exif pcntl intl gd zip opcache \
+    && docker-php-ext-install -j$(nproc) \
+        pdo_mysql \
+        mbstring \
+        bcmath \
+        exif \
+        pcntl \
+        intl \
+        gd \
+        zip \
+        opcache \
     && a2enmod rewrite headers \
     && rm -rf /var/lib/apt/lists/*
 
+# Installer Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
+# Copier le projet Laravel
 COPY . .
 
+# Copier les ressources frontend compilées
 COPY --from=frontend /app/public/build ./public/build
 
+# Configuration Apache
 COPY docker/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 
+# Installer les dépendances PHP
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
+# Préparer les dossiers Laravel et les permissions
 RUN mkdir -p storage/framework/cache \
     storage/framework/sessions \
     storage/framework/views \
