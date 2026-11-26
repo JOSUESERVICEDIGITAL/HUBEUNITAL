@@ -39,13 +39,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Installer Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
 WORKDIR /var/www/html
 
-# Copier le projet Laravel
 COPY . .
 
-# Copier les ressources frontend compilées
+# Vérifier que les fichiers Laravel sont bien présents
+RUN echo "=== CONTENU DU DOSSIER ===" \
+    && ls -la /var/www/html \
+    && echo "=== VERIFICATION COMPOSER.JSON ===" \
+    && test -f /var/www/html/composer.json \
+    && echo "composer.json trouvé !" \
+    || (echo "ERREUR : composer.json absent !" && exit 1)
+
 COPY --from=frontend /app/public/build ./public/build
 
 # Configuration Apache
