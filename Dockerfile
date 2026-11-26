@@ -34,7 +34,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         gd \
         zip \
         opcache \
-    && a2enmod rewrite headers \
+    && rm -f /etc/apache2/mods-enabled/mpm_event.* /etc/apache2/mods-enabled/mpm_worker.* \
+    && a2enmod mpm_prefork rewrite headers \
     && rm -rf /var/lib/apt/lists/*
 
 # Installer Composer
