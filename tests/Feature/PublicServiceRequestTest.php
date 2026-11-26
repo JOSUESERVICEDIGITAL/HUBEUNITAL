@@ -20,7 +20,8 @@ class PublicServiceRequestTest extends TestCase
             'organization' => 'Association Exemple',
             'details' => 'Nous souhaitons créer un site vitrine.',
         ])->assertCreated()
-            ->assertJsonPath('reference', 'SR-000001');
+            ->assertJsonPath('reference', 'SR-000001')
+            ->assertJsonPath('message', 'Votre demande a bien été envoyée. Un agent EUNITAL vous contactera prochainement.');
 
         $this->assertDatabaseHas('public_service_requests', [
             'chamber_slug' => 'secretariat',

@@ -67,4 +67,36 @@ class PublicFrontendToastTest extends TestCase
             ->assertOk()
             ->assertSee('iziToast.error', false);
     }
+
+    public function test_homepage_explains_eunital_and_groups_all_fourteen_chambers(): void
+    {
+        $response = $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('Le hub digital multi-métiers pour structurer, développer et sécuriser vos projets.')
+            ->assertSee('entrepreneurs, entreprises')
+            ->assertSee('Comment ça marche ?')
+            ->assertSee('Choisissez une Chambre')
+            ->assertSee('Choisissez un service')
+            ->assertSee('Nos services pour…')
+            ->assertSee('Envoyez votre demande')
+            ->assertSee('Choisir cette Chambre')
+            ->assertSee('Un agent EUNITAL vous contactera prochainement.')
+            ->assertSee('Découvrir les Chambres')
+            ->assertSee(route('category.activite', 'secretariat'), false)
+            ->assertSee(route('front.contact'), false)
+            ->assertSee('Tech &amp; numérique', false)
+            ->assertSee('Image &amp; croissance', false)
+            ->assertSee('Gestion &amp; cadre', false)
+            ->assertSee('Formation &amp; stratégie', false);
+
+        $this->assertSame(14, substr_count($response->getContent(), 'class="home-chamber-name"'));
+
+        $this->get(route('category.activite', 'secretariat'))
+            ->assertOk()
+            ->assertSee('Nos services pour Secrétariat')
+            ->assertSee('data-service-key="secretariat_saisie_de_documents_administratifs"', false)
+            ->assertSee('Votre nom *')
+            ->assertSee('Téléphone *')
+            ->assertSee('Décrivez votre besoin *');
+    }
 }

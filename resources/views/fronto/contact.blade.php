@@ -18,21 +18,27 @@
 
                         <div class="mb-3">
                             <div class="d-flex align-items-center mb-2">
-                                <i class="fa fa-map-marker-alt text-danger mr-2"></i>
+                                <span class="contact-info-icon" aria-hidden="true">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                </span>
                                 <h6 class="font-weight-bold mb-0">Notre siege</h6>
                             </div>
                             <p class="m-0">{{ $global_settings->adress }}</p>
                         </div>
                         <div class="mb-3">
                             <div class="d-flex align-items-center mb-2">
-                                <i class="fa fa-envelope-open text-danger mr-2"></i>
+                                <span class="contact-info-icon" aria-hidden="true">
+                                    <i class="fa fa-envelope-open"></i>
+                                </span>
                                 <h6 class="font-weight-bold mb-0">Envoyez nous un email</h6>
                             </div>
                             <p class="m-0">{{ $global_settings->email }}</p>
                         </div>
                         <div class="mb-3">
                             <div class="d-flex align-items-center mb-2">
-                                <i class="fa fa-phone-alt text-danger mr-2"></i>
+                                <span class="contact-info-icon" aria-hidden="true">
+                                    <i class="fa fa-phone-alt"></i>
+                                </span>
                                 <h6 class="font-weight-bold mb-0">Appelez-nous</h6>
                             </div>
                             <p class="m-0">{{ $global_settings->phone }}</p>
@@ -103,7 +109,7 @@
 
                         <div>
                             <button
-                                class="btn btn-danger font-weight-semi-bold px-4"
+                                class="btn btn-primary font-weight-semi-bold px-4"
                                 style="height: 50px"
                                 type="submit"
                             >

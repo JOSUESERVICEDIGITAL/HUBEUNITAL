@@ -3,35 +3,153 @@
 
 @section('title', 'EUNITAL — Le Hub du Monde Digital')
 @section('breaking_news')
+@php
+    $homeChamberGroups = [
+        [
+            'title' => 'Tech & numérique',
+            'description' => 'Concevoir, développer et protéger des solutions numériques.',
+            'slugs' => ['innovation', 'developpement', 'ingenierie', 'cybersecurite'],
+        ],
+        [
+            'title' => 'Image & croissance',
+            'description' => 'Créer des contenus, construire une marque et développer son activité.',
+            'slugs' => ['studio', 'graphisme', 'marketing', 'commerciale'],
+        ],
+        [
+            'title' => 'Gestion & cadre',
+            'description' => 'Structurer les finances, les équipes, les démarches et les documents.',
+            'slugs' => ['finance', 'juridique', 'rh', 'secretariat'],
+        ],
+        [
+            'title' => 'Formation & stratégie',
+            'description' => 'Renforcer les compétences et faire grandir les organisations.',
+            'slugs' => ['formation', 'strategie'],
+        ],
+    ];
+    $groupedChamberSlugs = array_merge(...array_column($homeChamberGroups, 'slugs'));
+    $otherChambers = $global_category->reject(
+        fn ($category) => in_array($category->slug, $groupedChamberSlugs, true)
+    );
+    if ($otherChambers->isNotEmpty()) {
+        $homeChamberGroups[] = [
+            'title' => 'Autres expertises',
+            'description' => 'Découvrez les autres compétences proposées par EUNITAL.',
+            'slugs' => $otherChambers->pluck('slug')->all(),
+        ];
+    }
+@endphp
 
-<!-- Breaking News Start -->
-<div class="container-fluid py-3">
+<section class="home-hero">
     <div class="container">
-        <div class="owl-carousel owl-carousel-2 carousel-item-3 position-relative">
-
-            @if(count($articles))
-                @foreach($articles as $article)
-                    <div class="d-flex">
-                        <img 
-                            src="{{ $article->imageUrl() }}"
-                            alt="{{ $article->title }}"
-                            style="width: 80px; height: 80px; object-fit: cover;"
-                        >
-                        <div class="d-flex align-items-center bg-light px-3" style="height: 80px;">
-                            <a class="text-secondary font-weight-semi-bold" href="{{ route('article.detail', $article->slug) }}">
-                                {{ Str::limit($article->title, 60) }}
-                            </a>
-                        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div class="home-hero-copy">
+                    <p class="home-eyebrow">EUNITAL · Le Hub du Monde Digital</p>
+                    <h1>Le hub digital multi-métiers pour structurer, développer et sécuriser vos projets.</h1>
+                    <p class="home-hero-lead">
+                        Nos 14 Chambres réunissent des compétences techniques, créatives, financières,
+                        juridiques et organisationnelles pour accompagner entrepreneurs, entreprises
+                        et porteurs de projets, de l’idée à la solution.
+                    </p>
+                    <div class="home-hero-actions">
+                        <a class="btn btn-primary btn-lg" href="#chambres">Découvrir les Chambres</a>
+                        <a class="btn btn-outline-light btn-lg" href="{{ route('front.contact') }}">Présenter mon besoin</a>
                     </div>
-                @endforeach
-            @else
-                <div class="text-center text-muted">Aucune actualité disponible pour le moment.</div>
-            @endif
-
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="home-hero-visual" role="img" aria-label="Enseigne EUNITAL Hub Digital en relief sur une façade contemporaine">
+                    <div class="home-facade-window home-facade-window-one"></div>
+                    <div class="home-facade-window home-facade-window-two"></div>
+                    <div class="home-hero-sign">
+                        <div class="home-sign-brand">
+                            <img src="{{ asset('img/logoeunital.png') }}" alt="">
+                            <div class="home-sign-wordmark">
+                                <strong>EUNITAL</strong>
+                                <span>HUB DIGITAL</span>
+                            </div>
+                        </div>
+                        <div class="home-sign-underline"></div>
+                    </div>
+                    <div class="home-hero-device home-hero-device-back" aria-hidden="true">
+                        <span class="home-device-screen">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>IDEAS</span>
+                        </span>
+                    </div>
+                    <div class="home-hero-device home-hero-device-front" aria-hidden="true">
+                        <span class="home-device-camera"></span>
+                        <span class="home-device-screen">
+                            <img src="{{ asset('img/logoeunital.png') }}" alt="">
+                            <strong>EUNITAL</strong>
+                            <small>Des idées aux solutions</small>
+                        </span>
+                    </div>
+                    <span class="home-hero-light home-hero-light-one" aria-hidden="true"></span>
+                    <span class="home-hero-light home-hero-light-two" aria-hidden="true"></span>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<!-- Breaking News End -->
+</section>
+
+<section class="home-steps-section" aria-labelledby="home-steps-title">
+    <div class="container">
+        <div class="home-section-heading">
+            <p class="home-eyebrow">Un parcours simple</p>
+            <h2 id="home-steps-title">Comment ça marche ?</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <article class="card home-step-card h-100">
+                    <div class="card-body">
+                        <div class="home-step-header">
+                            <span class="home-step-number">01</span>
+                            <i class="fas fa-sitemap home-step-icon" aria-hidden="true"></i>
+                        </div>
+                        <h3>Choisissez une Chambre</h3>
+                        <p>Sélectionnez le domaine adapté à votre projet pour ouvrir sa page dédiée.</p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-md-4 mb-3">
+                <article class="card home-step-card h-100">
+                    <div class="card-body">
+                        <div class="home-step-header">
+                            <span class="home-step-number">02</span>
+                            <i class="fas fa-concierge-bell home-step-icon" aria-hidden="true"></i>
+                        </div>
+                        <h3>Choisissez un service</h3>
+                        <p>Cliquez sur le bouton flottant « Nos services pour… » pour afficher le catalogue, puis sélectionnez la prestation souhaitée.</p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-md-4 mb-3">
+                <article class="card home-step-card h-100">
+                    <div class="card-body">
+                        <div class="home-step-header">
+                            <span class="home-step-number">03</span>
+                            <i class="fas fa-paper-plane home-step-icon" aria-hidden="true"></i>
+                        </div>
+                        <h3>Envoyez votre demande</h3>
+                        <p>Indiquez votre nom, votre email, votre téléphone et décrivez votre besoin. Un agent EUNITAL vous contactera prochainement.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="home-chambers-section" id="chambres" aria-labelledby="home-chambers-title">
+    <div class="container">
+        <div class="home-section-heading">
+            <p class="home-eyebrow">14 expertises réunies</p>
+            <h2 id="home-chambers-title">Trouvez la Chambre qui correspond à votre projet</h2>
+            <p>Des pôles complémentaires pour vous orienter rapidement vers la bonne expertise.</p>
+        </div>
+
+    </div>
+</section>
 
 @endsection
 
@@ -39,8 +157,7 @@
 <div class="container-fluid py-3">
     <div class="container">
         <div class="row">
-            <!-- Main News Slider -->
-            <div class="col-lg-8">
+            <div class="col-12">
     <div class="owl-carousel owl-carousel-2 carousel-item-1 position-relative mb-3 mb-lg-0">
         
         @if(count($articles))
@@ -74,32 +191,6 @@
         
     </div>
 </div>
-
-
-
-                                <!-- Categories Section -->
-                                <div class="col-lg-4">
-                                    <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
-
-
-                                    
-                                        <h3 class="m-0">Chambres</h3>
-                                        <a class="text-secondary font-weight-medium text-decoration-none" href="">View All</a>
-                                    </div>
-
-                                    @if(count($global_category))
-                                        @foreach($global_category->take(4) as $category)
-                                            <div class="position-relative overflow-hidden mb-3" style="height: 80px;">
-                                
-                                                <a href="{{ route('category.activite', $category->slug) }}" class="overlay align-items-center justify-content-center h4 m-0 text-white text-decoration-none">
-                                                    {{ $category->name }}
-                                                </a>
-                                            </div>
-                                        @endforeach
-                                    @else
-                                        <p class="text-muted">Aucune chambre disponible.</p>
-                                    @endif
-                                </div>
         </div>
     </div>
 </div>

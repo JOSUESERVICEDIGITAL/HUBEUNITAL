@@ -205,11 +205,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error(messages);
             }
             feedback.className = 'public-service-feedback is-visible is-success';
-            feedback.textContent = result.message + ' Nous allons vous contacter pour vous écouter soigneusement.' + (result.reference ? ' Référence : ' + result.reference : '');
+            feedback.textContent = result.message + (result.reference ? ' Référence : ' + result.reference : '');
             if (typeof iziToast !== 'undefined') {
                 iziToast.success({
                     title: 'Demande envoyée',
-                    message: result.message + ' Nous allons vous contacter pour vous écouter soigneusement.' + (result.reference ? ' Référence : ' + result.reference : ''),
+                    message: result.message + (result.reference ? ' Référence : ' + result.reference : ''),
                     position: 'topRight',
                     timeout: 7000
                 });

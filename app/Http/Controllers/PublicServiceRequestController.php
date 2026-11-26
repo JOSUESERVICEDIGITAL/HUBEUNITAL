@@ -37,7 +37,7 @@ class PublicServiceRequestController extends Controller
             'updated_at' => now(),
         ]);
 
-        $message = 'Votre demande a bien été envoyée.';
+        $message = 'Votre demande a bien été envoyée. Un agent EUNITAL vous contactera prochainement.';
         if ($request->expectsJson()) {
             return response()->json(['message' => $message, 'reference' => 'SR-'.str_pad((string) $requestId, 6, '0', STR_PAD_LEFT)], 201);
         }

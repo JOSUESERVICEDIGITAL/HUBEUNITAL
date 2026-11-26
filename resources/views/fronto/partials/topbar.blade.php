@@ -91,30 +91,42 @@
             </nav>
         </div>
     </div>
-    <div class="row align-items-center py-2 px-lg-5">
-        <div class="col-12 col-lg-5 d-flex flex-wrap align-items-center">
-            <a href="{{ url('/') }}" class="navbar-brand p-0 ml-xxs">
-                <x-eunital-brand />
-            </a>
-            <div class="eunital-welcome" aria-hidden="true">
-                <span id="welcome-typewriter"></span><span class="welcome-cursor"></span>
+    <div class="row py-2 px-lg-5 header-brand-row">
+        <div class="col-12">
+            <div class="header-showcase {{ $digitalSignageVideos->isNotEmpty() ? 'has-signage' : 'without-signage' }}">
+                <a href="{{ url('/') }}" class="header-brand-logo">
+                    <x-eunital-brand />
+                </a>
+                <div class="eunital-welcome-wrap">
+                    <span class="eunital-welcome-label"><i class="fas fa-comment-dots" aria-hidden="true"></i> Un message pour vous</span>
+                    <div class="eunital-welcome" aria-hidden="true">
+                        <span id="welcome-typewriter"></span><span class="welcome-cursor"></span>
+                    </div>
+                </div>
+                @if ($digitalSignageVideos->isNotEmpty())
+                    <section class="header-signage-card" aria-label="Affichage digital EUNITAL">
+                        <div class="header-signage-heading">
+                            <span class="header-signage-icon" aria-hidden="true"><i class="fas fa-photo-video"></i></span>
+                            <strong>Vitrine digitale</strong>
+                            <span class="header-signage-tag">EUNITAL</span>
+                        </div>
+                        <div class="frontoffice-signage-frame">
+                            <video
+                                id="frontoffice-signage-player"
+                                class="frontoffice-signage-player"
+                                muted
+                                autoplay
+                                playsinline
+                                preload="metadata"
+                                aria-label="Vidéos publicitaires EUNITAL"
+                            ></video>
+                        </div>
+                        <p id="frontoffice-signage-status" class="frontoffice-signage-status mb-0" aria-live="polite"></p>
+                    </section>
+                @endif
+                <span class="sr-only">Bienvenue à vous au Hub EUNITAL. Le hub des idées qui deviennent des solutions</span>
             </div>
-            <span class="sr-only">Bienvenue à vous au Hub EUNITAL. Le hub des idées qui deviennent des solutions</span>
         </div>
-        @if ($digitalSignageVideos->isNotEmpty())
-            <div class="col-12 col-lg-7 d-flex flex-column align-items-center align-items-lg-end justify-content-center py-2">
-                <video
-                    id="frontoffice-signage-player"
-                    class="frontoffice-signage-player"
-                    muted
-                    autoplay
-                    playsinline
-                    preload="metadata"
-                    aria-label="Vidéos publicitaires EUNITAL"
-                ></video>
-                <p id="frontoffice-signage-status" class="frontoffice-signage-status mb-0" aria-live="polite"></p>
-            </div>
-        @endif
     </div>
 </div>
 
@@ -179,6 +191,8 @@
                 if (playRequest && typeof playRequest.catch === 'function') {
                     playRequest.catch(function() {
                         signagePlayer.controls = true;
+                        signageStatus.classList.remove('is-error');
+                        signageStatus.classList.add('is-warning');
                         signageStatus.textContent = 'La lecture automatique est bloquée. Utilisez les commandes vidéo.';
                     });
                 }
@@ -190,11 +204,14 @@
             });
 
             signagePlayer.addEventListener('playing', function() {
+                signageStatus.classList.remove('is-warning', 'is-error');
                 signageStatus.textContent = '';
             });
 
             signagePlayer.addEventListener('error', function() {
                 signagePlayer.controls = true;
+                signageStatus.classList.remove('is-warning');
+                signageStatus.classList.add('is-error');
                 signageStatus.textContent = 'Cette vidéo ne peut pas être lue.';
             });
 
