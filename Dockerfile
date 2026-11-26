@@ -71,4 +71,4 @@ RUN mkdir -p storage/framework/cache \
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+CMD ["sh", "-c", "php artisan migrate --force; php artisan storage:link 2>/dev/null; exec apache2-foreground"]
