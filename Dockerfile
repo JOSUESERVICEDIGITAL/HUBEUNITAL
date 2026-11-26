@@ -34,7 +34,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         gd \
         zip \
         opcache \
-    && a2enmod rewrite headers \
+    && rm -f /etc/apache2/mods-enabled/mpm_event.* /etc/apache2/mods-enabled/mpm_worker.* \
+    && a2enmod mpm_prefork rewrite headers \
     && rm -rf /var/lib/apt/lists/*
 
 # Installer Composer
@@ -71,4 +72,4 @@ RUN mkdir -p storage/framework/cache \
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+CMD ["sh", "-c", "php artisan migrate --force; php artisan storage:link 2>/dev/null; exec apache2-foreground"]
