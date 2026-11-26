@@ -2,9 +2,26 @@
     $digitalSignagePlaylist = $digitalSignageVideos
         ->map(fn ($video) => asset('storage/' . $video->file_path))
         ->values();
+
+    $chamberIcons = [
+        'ingenierie' => 'fa-drafting-compass',
+        'marketing' => 'fa-bullhorn',
+        'studio' => 'fa-video',
+        'graphisme' => 'fa-pen-nib',
+        'juridique' => 'fa-balance-scale',
+        'rh' => 'fa-users',
+        'commerciale' => 'fa-handshake',
+        'innovation' => 'fa-lightbulb',
+        'developpement' => 'fa-code',
+        'formation' => 'fa-graduation-cap',
+        'finance' => 'fa-coins',
+        'cybersecurite' => 'fa-shield-alt',
+        'strategie' => 'fa-chess',
+        'secretariat' => 'fa-file-alt',
+    ];
 @endphp
 
-<div id="topbar" class="container-fluid">
+<div id="topbar">
 <div class="container-fluid">
     <div class="row bg-light px-lg-5">
         <div class="col-12">
@@ -31,10 +48,11 @@
                             <a href="{{ route('fronto.soutien') }}" class="nav-link">Soutenir EUNITAL</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Chambres</a>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Nos chambres</a>
                             <div class="dropdown-menu rounded-0 m-0">
                                 @foreach ($global_category as $category)
                                     <a href="{{ route('category.activite', $category->slug) }}" class="dropdown-item">
+                                        <i class="fas {{ $chamberIcons[$category->slug] ?? 'fa-th-large' }} chamber-menu-icon" aria-hidden="true"></i>
                                         {{ $category->name }}
                                     </a>
                                 @endforeach
@@ -91,8 +109,8 @@
             </nav>
         </div>
     </div>
-    <div class="row py-2 px-lg-5 header-brand-row">
-        <div class="col-12">
+    <div class="row py-2 header-brand-row">
+        <div class="col-12 px-0">
             <div class="header-showcase {{ $digitalSignageVideos->isNotEmpty() ? 'has-signage' : 'without-signage' }}">
                 <a href="{{ url('/') }}" class="header-brand-logo">
                     <x-eunital-brand />

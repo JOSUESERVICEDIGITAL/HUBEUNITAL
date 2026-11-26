@@ -22,10 +22,6 @@
         }
     </style>
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
     @if ($errors->any())
         <div class="alert alert-danger" role="alert">
             <ul class="mb-0">
@@ -175,6 +171,7 @@
                                         name="is_active"
                                         value="1"
                                         id="video-active-{{ $video->id }}"
+                                        data-save-on-change
                                         @checked($video->is_active)
                                     >
                                     <label class="form-check-label" for="video-active-{{ $video->id }}">
@@ -218,6 +215,24 @@
 
 @push('scripts')
     <script>
+        document.querySelectorAll('[data-save-on-change]').forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                var form = checkbox.form;
+
+                if (!form) {
+                    checkbox.checked = !checkbox.checked;
+                    iziToast.error({
+                        title: 'Erreur',
+                        message: 'Impossible d’enregistrer le changement de diffusion.',
+                        position: 'topRight'
+                    });
+                    return;
+                }
+
+                form.requestSubmit();
+            });
+        });
+
         document.querySelectorAll('[data-preview-toggle]').forEach(function(button) {
             button.addEventListener('click', function() {
                 var videoId = button.getAttribute('data-preview-toggle');

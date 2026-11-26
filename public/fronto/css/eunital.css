@@ -6,6 +6,7 @@
 .eunital-brand-copy small { color: var(--eunital-primary); font-size: 10px; letter-spacing: .08em; margin-top: 5px; }
 .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link.active { color: #fff; background: var(--eunital-primary); }
 .dropdown-item:focus, .dropdown-item:hover { background-color: var(--eunital-soft); color: var(--eunital-ink); }
+.chamber-menu-icon { width: 18px; flex: 0 0 18px; margin-right: 8px; color: var(--eunital-primary); text-align: center; }
 .btn:focus-visible, a:focus-visible { outline: 3px solid var(--eunital-accent); outline-offset: 3px; }
 .login-body { background: var(--eunital-soft); }
 .login-wrapper .loginbox .login-left { background: linear-gradient(145deg, #103e46, #007f89); }
@@ -24,26 +25,24 @@
 }
 #topbar { position: relative; }
 body { padding-top: 0; }
-.header-brand-row { padding-top: 12px; padding-bottom: 12px; }
+.header-brand-row { padding-top: 5px; padding-bottom: 5px; }
 .header-showcase {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(190px, .8fr) minmax(340px, 1.5fr) minmax(190px, .8fr);
+    grid-template-columns: minmax(180px, .85fr) minmax(0, 1.5fr) minmax(180px, .85fr);
     align-items: center;
     gap: 0;
     overflow: hidden;
-    padding: 14px clamp(14px, 2vw, 24px);
-    border: 1px solid #cce7e9;
-    border-radius: 16px;
-    background: linear-gradient(110deg, #fff 0%, #f5fbfc 62%, #eaf7f8 100%);
-    box-shadow: 0 8px 22px rgba(16, 62, 70, .08), inset 0 1px #fff;
+    padding: 6px clamp(14px, 2vw, 24px);
+    border-bottom: 2px solid #cce7e9;
+    background: #f5fbfc;
 }
 .header-showcase.without-signage { grid-template-columns: minmax(220px, .8fr) minmax(0, 1.2fr); }
 .header-showcase::before {
     position: absolute;
     top: 0;
     left: 0;
-    width: 5px;
+    width: 4px;
     height: 100%;
     background: linear-gradient(180deg, var(--eunital-accent), var(--eunital-primary));
     content: "";
@@ -59,9 +58,8 @@ body { padding-top: 0; }
 .header-brand-logo:hover { text-decoration: none; }
 .header-brand-logo .eunital-brand { gap: 10px; }
 .header-brand-logo .eunital-brand img {
-    width: clamp(54px, 5vw, 72px);
-    height: clamp(54px, 5vw, 72px);
-    filter: drop-shadow(0 5px 7px rgba(0, 127, 137, .18));
+    width: clamp(48px, 4vw, 60px);
+    height: clamp(48px, 4vw, 60px);
 }
 .header-brand-logo .eunital-brand-copy strong {
     font-size: clamp(22px, 2vw, 28px);
@@ -79,9 +77,9 @@ body { padding-top: 0; }
 }
 .eunital-welcome-label {
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     color: #54747a;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 800;
     letter-spacing: .1em;
     text-transform: uppercase;
@@ -89,17 +87,17 @@ body { padding-top: 0; }
 .eunital-welcome-label i { margin-right: 4px; color: var(--eunital-primary); }
 .eunital-welcome {
     min-width: 0;
-    min-height: 2.7em;
+    min-height: 0;
     color: var(--eunital-ink);
-    font-size: clamp(13px, 1.1vw, 15px);
-    font-weight: 800;
-    letter-spacing: 0;
-    line-height: 1.35;
+    font-size: clamp(17px, 1.55vw, 21px);
+    font-weight: 900;
+    letter-spacing: .01em;
+    line-height: 1.25;
     overflow-wrap: break-word;
 }
 .header-signage-card {
     width: 100%;
-    max-width: 220px;
+    max-width: 190px;
     justify-self: center;
     padding-left: 14px;
 }
@@ -145,9 +143,8 @@ body { padding-top: 0; }
 .frontoffice-signage-frame {
     padding: 3px;
     border: 1px solid #a9d8db;
-    border-radius: 10px;
-    background: linear-gradient(145deg, #103e46, #071b21);
-    box-shadow: 0 5px 12px rgba(16, 62, 70, .17), inset 0 1px rgba(255,255,255,.2);
+    border-radius: 6px;
+    background: #103e46;
 }
 .header-toolbar .navbar-nav .nav-link {
     padding: .5rem .55rem;
@@ -523,8 +520,8 @@ body { padding-top: 0; }
     .header-toolbar { padding: .35rem 0; }
     .header-showcase {
         grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
-        gap: 12px;
-        padding: 14px;
+        gap: 8px;
+        padding: 8px 14px;
     }
     .header-showcase.without-signage { grid-template-columns: minmax(190px, .8fr) minmax(0, 1.2fr); }
     .header-brand-logo { padding-right: 0; }
@@ -532,16 +529,16 @@ body { padding-top: 0; }
     .header-brand-logo .eunital-brand-copy strong { font-size: 21px; }
     .header-brand-logo .eunital-brand-copy small { font-size: 8px; }
     .eunital-welcome-wrap { padding: 0 0 0 14px; border-right: 0; }
-    .eunital-welcome { min-height: 0; font-size: 13px; }
+    .eunital-welcome { font-size: clamp(16px, 2vw, 18px); }
     .header-signage-card {
         display: grid;
         grid-column: 1 / -1;
-        grid-template-columns: minmax(0, 1fr) 210px;
+        grid-template-columns: minmax(0, 1fr) 190px;
         align-items: center;
         gap: 0 12px;
-        max-width: 380px;
+        max-width: 360px;
         justify-self: center;
-        padding: 10px 0 0;
+        padding: 6px 0 0;
         border-top: 1px solid #c8e3e5;
     }
     .header-signage-heading { margin-bottom: 0; }
@@ -579,29 +576,29 @@ body { padding-top: 0; }
     .home-device-screen > small { font-size: 7px; }
     .home-steps-section, .home-chambers-section { padding: 32px 0; }
     .home-step-card .card-body, .home-chamber-group { padding: 19px; }
-    .header-brand-row { padding-top: 10px !important; padding-bottom: 10px !important; }
+    .header-brand-row { padding-top: 5px !important; padding-bottom: 5px !important; }
     .header-showcase {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 10px;
-        padding: 12px 14px;
-        border-radius: 14px;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+        gap: 8px;
+        padding: 8px 10px;
     }
-    .header-showcase.without-signage { grid-template-columns: minmax(0, 1fr); }
-    .header-brand-logo .eunital-brand img { width: 52px; height: 52px; }
-    .header-brand-logo .eunital-brand-copy strong { font-size: 22px; }
+    .header-showcase.without-signage { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); }
+    .header-brand-logo .eunital-brand img { width: 44px; height: 44px; }
+    .header-brand-logo .eunital-brand-copy strong { font-size: 20px; }
     .eunital-welcome-wrap {
-        padding: 10px 0 0;
-        border-top: 1px solid #c8e3e5;
-        border-left: 0;
+        padding: 0 0 0 10px;
+        border-top: 0;
+        border-left: 1px solid #c8e3e5;
     }
-    .eunital-welcome { font-size: 13px; }
+    .eunital-welcome { font-size: 15px; }
     .header-signage-card {
-        grid-column: auto;
+        grid-column: 1 / -1;
         grid-template-columns: minmax(0, 1fr);
         gap: 0;
         max-width: 185px;
         margin: 0 auto;
-        padding-top: 10px;
+        padding-top: 6px;
+        border-top: 1px solid #c8e3e5;
     }
     .header-signage-heading { gap: 8px; margin-bottom: 7px; }
     .header-signage-icon { width: 28px; height: 28px; flex-basis: 28px; border-radius: 8px; }

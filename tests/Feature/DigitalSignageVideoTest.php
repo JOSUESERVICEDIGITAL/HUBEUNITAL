@@ -112,6 +112,27 @@ class DigitalSignageVideoTest extends TestCase
         $this->assertStringContainsString('data-preview-src=', $html);
     }
 
+    public function test_active_toggle_submits_automatically_and_has_success_toast(): void
+    {
+        DigitalSignageVideo::create([
+            'title' => 'Vidéo à activer',
+            'file_path' => 'digital-signage/videos/a-activer.mp4',
+            'sort_order' => 1,
+            'is_active' => true,
+        ]);
+
+        $html = $this->actingAs($this->administrator())
+            ->withSession(['success' => 'Les paramètres de la vidéo ont été mis à jour.'])
+            ->get(route('signage-videos.index'))
+            ->assertOk()
+            ->getContent();
+
+        $this->assertStringContainsString('data-save-on-change', $html);
+        $this->assertStringContainsString("checkbox.addEventListener('change'", $html);
+        $this->assertStringContainsString('form.requestSubmit();', $html);
+        $this->assertStringContainsString('iziToast.success', $html);
+    }
+
     public function test_frontend_plays_only_active_videos_in_order(): void
     {
         Storage::fake('public');
