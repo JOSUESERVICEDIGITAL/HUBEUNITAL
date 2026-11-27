@@ -54,6 +54,9 @@ RUN echo "=== CONTENU DU DOSSIER ===" \
 
 COPY --from=frontend /app/public/build ./public/build
 
+# Limites d'upload PHP
+COPY docker/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
+
 # Configuration Apache
 COPY docker/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 
